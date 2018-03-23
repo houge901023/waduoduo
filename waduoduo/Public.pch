@@ -1,0 +1,226 @@
+//
+//  Public.pch
+//  chedaizaixian
+//
+//  Created by XSD on 2017/2/24.
+//  Copyright © 2017年 深圳小宇时代科技有限公司. All rights reserved.
+//
+
+#ifndef Public_pch
+#define Public_pch
+
+//添加了.c 文件
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+
+#import "AppDelegate.h"
+#import "UIColor+Hex.h"
+#import "MJExtension.h"
+#import "Common.h"
+#import "UIImage+WT.h"
+#import "UIImageView+WebCache.h"
+#import "MJRefresh.h"
+#import <JavaScriptCore/JavaScriptCore.h>
+#import "IQKeyboardManager.h"
+#import "UIView+WT.h"
+#import "BaseVC.h"
+#import "XYString.h"
+#import "UIView+Toast.h"
+#import "SVProgressHUD.h"
+#import "MainNavigationController.h"
+#import <AVOSCloud.h>
+#import "NSDate+Utils.h"
+#import <SDAutoLayout.h>
+
+__attribute__((annotate("returns_localized_nsstring")))
+static inline NSString *LocalizationNotNeeded(NSString *s) {
+    return s;
+}
+
+#endif
+
+
+#define ReceiveJSON @"json"
+
+//接口定义
+
+//http://192.168.1.188/jqlapi/index.php
+//http://ios.xsdai.net //ios 端专用域名
+
+#define StrFormatTh(r, g ,b) [NSString stringWithFormat:@"%@%@%@",(r),(g),(b)]
+#define StrFormatTW(r, g ) [NSString stringWithFormat:@"%@%@",(r),(g)]
+#define IP @"http://ios.xsdai.net"
+
+/**
+ *  弱指针
+ */
+#define DefineWeakSelf __weak __typeof(self) weakSelf = self
+
+//单列
+#define Window [UIApplication sharedApplication].keyWindow
+#define CenterPoint [NSValue valueWithCGPoint:[UIApplication sharedApplication].keyWindow.center]
+#define APP_DELE                      ((AppDelegate*)([UIApplication sharedApplication].delegate))
+#define USER_DEFAULT                                [NSUserDefaults standardUserDefaults]
+#define MAIN_STORY_BOARD(Name)                      [UIStoryboard storyboardWithName:Name bundle:nil]
+#define NS_NOTIFICATION_CENTER                      [NSNotificationCenter defaultCenter]
+
+#define IMAGE_WITH_NAME(imageName) [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForAuxiliaryExecutable:imageName]]
+#define kIMG(iname) [UIImage imageNamed:iname]
+
+// RGB颜色
+// This code will only compile on versions <= iOS 10.0
+#define RGBColor(r, g, b) [UIColor DisplayP3Red:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+#define UIColorFromRGB(rgbValue)    [UIColor DisplayP3Red:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+#define UIColorWithRGBA(r,g,b,a)        [UIColor DisplayP3Red:r/255.0f green:g/255.0f blue:b/255.0f alpha:a]
+#define color(r,g,b,p) [UIColor DisplayP3Red:r/255.0 green:g/255.0 blue:b/255.0 alpha:p]
+//十六进制色值+透明度
+#define colorValue(rgbValue,transparentValue) [UIColor \
+DisplayP3Red:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
+blue:((float)(rgbValue & 0xFF))/255.0 alpha:transparentValue]
+
+
+//字体
+#define font_Bold @"TrebuchetMS-Bold"//字体加粗
+#define font_fine @"Heiti SC"//字体细
+#define kFontBold(a) [UIFont boldSystemFontOfSize:font(a)]
+#define kFONT(a)  [UIFont systemFontOfSize:font(a)]
+#define kFontFine(a) [UIFont fontWithName:@"Heiti SC" size:font(a)]
+//色值
+#define promptColor @"#888888"
+#define MyGrayColor UIColorFromRGB(0xd2d2d2)
+#define TINTCOLOR  UIColorFromRGB(0x18c5da)
+#define IMGNAME(name) [UIImage imageNamed:name]
+#define GoodsNameColor UIColorFromRGB(0x222222)
+#define GoodsNameFont [UIFont systemFontOfSize:13]
+#define GoodsPriceColor UIColorFromRGB(0xfc0000)
+#define GoodsPriceFont [UIFont systemFontOfSize:16]
+#define MyBlueColor UIColorFromRGB(0x2196f3)
+
+#define BorderColor colorValue(0xC0C0C0,1) //线的颜色
+#define BorderColor2 color(229, 229, 229, 1)//分割线颜色
+#define titleC1 colorValue(0x333333,1)
+#define titleC2 colorValue(0x666666,1)
+#define titleC3 colorValue(0x999999,1)
+#define BackGroundColor colorValue(0xf0f0f0,1)//界面默认背景色
+
+#define mainBlue colorValue(0x0294ff,1)
+#define mainYellow colorValue(0xFF9B00,1)
+#define mainGreen colorValue(0x56CFB0,1)
+
+//数据库地址
+#define PATH [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"data.sqlite"]
+//屏幕尺寸
+#define kScreen_Height [UIScreen mainScreen].bounds.size.height
+#define kScreen_Width [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#define kScreenWidth [UIScreen mainScreen].bounds.size.width
+#define SCREEN_WIDTH                    ([UIScreen mainScreen].bounds.size.width)
+#define SCREEN_HEIGHT                   ([UIScreen mainScreen].bounds.size.height)
+
+#define iPhone4 ([UIScreen mainScreen].bounds.size.height == 480)
+#define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iPhone6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? (CGSizeEqualToSize(CGSizeMake(750, 1334), [[UIScreen mainScreen] currentMode].size)) : NO)
+#define iPhone6plus ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? (CGSizeEqualToSize(CGSizeMake(1125, 2001), [[UIScreen mainScreen] currentMode].size) || CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size)) : NO)
+
+#ifdef DEBUG
+#define NSLog(...) NSLog(__VA_ARGS__)
+#define debugMethod() NSLog(@"%s", __func__)
+#else
+#define NSLog(...)
+#define debugMethod()
+#endif
+
+#define kWidth(R) (R)*(kScreenWidth)/375.0
+#define kWidth5(R) (iPhone5?((R)*(kScreenWidth)/320):((R)*(kScreenWidth)/375))
+#define kHeight(R) (iPhone4?((R)*(kScreenHeight)/480):((R)*(kScreenHeight)/667))
+#define kHeight5(R) (iPhone5?((R)*(kScreenHeight)/568):((R)*(kScreenHeight)/667))
+#define font(R) (R)*(kScreenWidth)/375.0
+
+//判断iphone6+
+#define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iPhone5s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iPhone6s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(750, 1334), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iPhone6Plus ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iPhoneX ([UIScreen mainScreen].bounds.size.height == 812)
+
+//判断
+#define equipmentSize ([[UIScreen mainScreen] currentMode].size)
+
+#define IOS7LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+#define IOS8LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+#define IOS10_2LATER ([[[UIDevice currentDevice] systemVersion] floatValue] > 10.1)
+#define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]// 手机系统版本
+
+// 基本尺寸
+#define JLNavH    (iPhoneX ? 88 : 64)
+#define JLTabH    (iPhoneX ? 83 : 49)
+#define JLNavTab  (JLNavH+JLTabH)
+#define JLNavY(R) (iPhoneX ? R+24 : R)
+
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
+#define IS_OS_5_OR_LATER                            SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"5.0")
+#define IS_OS_6_OR_LATER                            SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")
+#define IS_OS_7_OR_LATER                            SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")
+#define IS_OS_10_OR_LATER                           SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10.0")
+
+#define IS_WIDESCREEN_5                            (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double)568) < __DBL_EPSILON__)
+#define IS_WIDESCREEN_6                            (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double)667) < __DBL_EPSILON__)
+#define IS_WIDESCREEN_6Plus                        (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double)736) < __DBL_EPSILON__)
+#define IS_IPHONE                                  ([[[UIDevice currentDevice] model] isEqualToString: @"iPhone"] || [[[UIDevice currentDevice] model] isEqualToString: @"iPhone Simulator"])
+#define IS_IPOD                                    ([[[UIDevice currentDevice] model] isEqualToString: @"iPod touch"])
+#define IS_IPHONE_5                                (IS_IPHONE && IS_WIDESCREEN_5)
+#define IS_IPHONE_6                                (IS_IPHONE && IS_WIDESCREEN_6)
+#define IS_IPHONE_6Plus                            (IS_IPHONE && IS_WIDESCREEN_6Plus)
+
+#define widthX                          0
+#define heightY                         10.0f
+#define DOT_COORDINATE                  0.0f
+#define STATUS_BAR_HEIGHT               20.0f
+#define BAR_ITEM_WIDTH_HEIGHT           30.0f
+#define NAVIGATION_BAR_HEIGHT           44.0f
+#define TAB_TAB_HEIGHT                  49.0f
+#define kVIEW_BX(view) (view.frame.origin.x + view.frame.size.width)
+#define kVIEW_BY(view) (view.frame.origin.y + view.frame.size.height)
+
+#define TABLE_VIEW_ROW_HEIGHT           NAVIGATION_BAR_HEIGHT
+#define CONTENT_VIEW_HEIGHT_NO_TAB_BAR  (SCREEN_HEIGHT - STATUS_BAR_HEIGHT - NAVIGATION_BAR_HEIGHT)
+#define CONTENT_VIEW_HEIGHT_TAB_BAR     (CONTENT_VIEW_HEIGHT_NO_TAB_BAR - TAB_TAB_HEIGHT)
+
+//是否为空
+#define isNull(a)  ( (a==nil) || ((NSNull*)a==[NSNull null]) )
+#define isNotNull(a)  (!isNull(a))
+#define avoidNull(a) isNull(a) ? @"" : a
+
+#define IFISNIL(v)                      (v = (v != nil) ? v : @"")
+#define IFISNILFORNUMBER(v)             (v = (v != nil) ? v : [NSNumber numberWithInt:0])
+#define IFISSTR(v)                      (v = ([v isKindOfClass:[NSString class]]) ? v : [NSString stringWithFormat:@"%@",v])
+
+#pragma mark - **** Constants ****
+#pragma mark -
+
+#define ARROW_BUTTON_WIDTH              NAVIGATION_BAR_HEIGHT
+#define NAV_TAB_BAR_HEIGHT              ARROW_BUTTON_WIDTH
+#define ITEM_HEIGHT                     NAV_TAB_BAR_HEIGHT
+
+#define NavTabbarColor                  UIColorWithRGBA(240.0f, 230.0f, 230.0f, 1.0f)
+#define SCNavTabbarBundleName           @"SCNavTabBar.bundle"
+
+#define SCNavTabbarSourceName(file) [SCNavTabbarBundleName stringByAppendingPathComponent:file]
+
+#define WTStrIsEmpty(str) ([str isKindOfClass:[NSNull class]] || [str length] < 1 ? YES : NO || [str isEqualToString:@"(null)"] || [str isEqualToString:@"null"])
+
+
+//ARC BLOCK
+#define WEAKSELF __weak __typeof(&*self)weakSelf = self
+#define STRONGSELF __strong __typeof(weakSelf)strongSelf = weakSelf
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* Public_pch */

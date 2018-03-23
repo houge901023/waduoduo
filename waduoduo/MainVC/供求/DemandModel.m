@@ -1,0 +1,13 @@
+//
+//  DemandModel.m
+//  waduoduo
+//
+//  Created by 名侯 on 2017/5/2.
+//  Copyright © 2017年 侯彦名. All rights reserved.
+//
+
+#import "DemandModel.h"
+
+@implementation DemandModel
+
+@end

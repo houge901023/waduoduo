@@ -1,0 +1,17 @@
+//
+//  setCell.h
+//  waduoduo
+//
+//  Created by 名侯 on 2017/5/5.
+//  Copyright © 2017年 侯彦名. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface setCell : UITableViewCell
+
+@property (nonatomic, strong) UILabel *titleLB;
+@property (nonatomic, strong) UILabel *valueLB;
+@property (nonatomic, strong) UIImageView *iconImg;
+
+@end

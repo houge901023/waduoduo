@@ -12,6 +12,11 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+@property (nonatomic ,copy) NSString *RCIMtoken;
+
+@property (nonatomic ,assign) BOOL newV;
+
+@property (nonatomic ,assign) NSInteger refreshNum; //1 表示收藏  2.用户
 
 @end
 
