@@ -82,6 +82,8 @@
     
     icon = [[UIImageView alloc] initWithFrame:CGRectMake(40, kHeight(50), kHeight(60), kHeight(60))];
     [icon sd_setImageWithURL:[NSURL URLWithString:[[AVUser currentUser][@"iconHead"] imgUrlUpdate]] placeholderImage:[UIImage imageNamed:@"my_icon"]];
+    icon.contentMode = UIViewContentModeScaleAspectFill;
+    icon.layer.masksToBounds = YES;
     [self setYuan:icon size:kHeight(30)];
     [self setBorder:icon size:2 withColor:[UIColor whiteColor]];
     [headV addSubview:icon];

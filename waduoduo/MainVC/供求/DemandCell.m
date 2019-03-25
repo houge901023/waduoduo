@@ -110,6 +110,8 @@
     
     
     [headV sd_setImageWithURL:[NSURL URLWithString:[user[@"iconHead"] imgUrlUpdate]] placeholderImage:[UIImage imageNamed:@"my_icon"]];
+    headV.contentMode = UIViewContentModeScaleAspectFill;
+    headV.layer.masksToBounds = YES;
     nameLB.text = avoidNull(model.user.username);
     
     if (model.lable.length) {

@@ -487,7 +487,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
 - (NSURL *)photoBrowser:(SDPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
 {
     NSString *imageName = imgurl[index];
-    NSURL *url = [NSURL URLWithString:imageName];
+    NSURL *url = [NSURL URLWithString:[imageName imgUrlUpdate]];
     
     return url;
 }

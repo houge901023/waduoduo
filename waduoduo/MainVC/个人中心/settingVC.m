@@ -131,6 +131,8 @@
         cell.titleLB.hidden = YES;
         cell.iconImg.hidden = NO;
         [cell.iconImg sd_setImageWithURL:[NSURL URLWithString:avoidNull([user[@"iconHead"] imgUrlUpdate])] placeholderImage:[UIImage imageNamed:@"my_icon"]];
+        cell.iconImg.contentMode = UIViewContentModeScaleAspectFill;
+        cell.iconImg.layer.masksToBounds = YES;
         cell.valueLB.centerY = 30;
     }else if ([tiStr isEqualToString:@"清理缓存"]) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

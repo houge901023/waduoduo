@@ -89,7 +89,8 @@
     UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     iconImage = portraitImg;
     _iconImg.image = iconImage;
-    
+    _iconImg.contentMode = UIViewContentModeScaleAspectFill;
+    _iconImg.layer.masksToBounds = YES;
     //    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     /* 此处info 有六个值
      * UIImagePickerControllerMediaType; // an NSString UTTypeImage)

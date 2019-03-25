@@ -258,7 +258,7 @@
         [self showFirstImage];
     }
     
-    _indexLabel.center = CGPointMake(self.bounds.size.width * 0.5, 35);
+    _indexLabel.center = CGPointMake(self.bounds.size.width * 0.5, JLNavH-20);
     _saveButton.frame = CGRectMake(30, self.bounds.size.height - 70, 50, 25);
 }
 
