@@ -271,7 +271,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
     AVObject *product = self.products[indexPath.row];
     NSString *url = [product[@"image"] componentsSeparatedByString:@","][0];
     
-    [cell.imageV sd_setImageWithURL:[NSURL URLWithString:avoidNull(url)] placeholderImage:[UIImage imageNamed:@"img_ default"]];
+    [cell.imageV sd_setImageWithURL:[NSURL URLWithString:avoidNull([url imgUrlUpdate])] placeholderImage:[UIImage imageNamed:@"img_ default"]];
     cell.titleLB.text = [product objectForKey:@"title"];
     cell.nameLB.text = [NSString stringWithFormat:@"价格：%@元",avoidNull([product objectForKey:@"price"])];
     

@@ -141,4 +141,11 @@
 /** 获取UUID */
 + (NSString *)UUID;
 
+/**
+ 解决适配LeanCloud改变图片地址
+
+ @return 正确图片地址
+ */
+- (NSString *)imgUrlUpdate;
+
 @end

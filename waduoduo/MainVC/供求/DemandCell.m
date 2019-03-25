@@ -108,7 +108,8 @@
     
     AVUser *user = model.user;
     
-    [headV sd_setImageWithURL:[NSURL URLWithString:user[@"iconHead"]] placeholderImage:[UIImage imageNamed:@"my_icon"]];
+    
+    [headV sd_setImageWithURL:[NSURL URLWithString:[user[@"iconHead"] imgUrlUpdate]] placeholderImage:[UIImage imageNamed:@"my_icon"]];
     nameLB.text = avoidNull(model.user.username);
     
     if (model.lable.length) {

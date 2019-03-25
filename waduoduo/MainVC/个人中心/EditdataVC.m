@@ -52,7 +52,7 @@
     
     AVUser *user = [AVUser currentUser];
     
-    [_iconImg sd_setImageWithURL:[NSURL URLWithString:avoidNull(user[@"iconHead"])] placeholderImage:[UIImage imageNamed:@"my_icon"]];
+    [_iconImg sd_setImageWithURL:[NSURL URLWithString:avoidNull([user[@"iconHead"] imgUrlUpdate])] placeholderImage:[UIImage imageNamed:@"my_icon"]];
     
     _nameTF.text = avoidNull(user.username);
     _companyTF.text = avoidNull(user[@"company"]);

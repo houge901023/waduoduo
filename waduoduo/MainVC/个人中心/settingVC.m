@@ -130,7 +130,7 @@
     if ([tiStr isEqualToString:@""]) {
         cell.titleLB.hidden = YES;
         cell.iconImg.hidden = NO;
-        [cell.iconImg sd_setImageWithURL:[NSURL URLWithString:avoidNull(user[@"iconHead"])] placeholderImage:[UIImage imageNamed:@"my_icon"]];
+        [cell.iconImg sd_setImageWithURL:[NSURL URLWithString:avoidNull([user[@"iconHead"] imgUrlUpdate])] placeholderImage:[UIImage imageNamed:@"my_icon"]];
         cell.valueLB.centerY = 30;
     }else if ([tiStr isEqualToString:@"清理缓存"]) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

@@ -37,7 +37,7 @@
 - (void)setup {
     
     
-    UIView *backV = [[UIView alloc] initWithFrame:CGRectMake(15, 80, SCREEN_WIDTH-30, 135)];
+    UIView *backV = [[UIView alloc] initWithFrame:CGRectMake(15, JLNavH+16, SCREEN_WIDTH-30, 135)];
     [self setYuan:backV size:5];
     [self setBorder:backV size:1];
     [self.view addSubview:backV];

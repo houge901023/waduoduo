@@ -54,7 +54,7 @@
     [self PixeH:CGPointMake(0, 79) lenght:SCREEN_WIDTH add:view];
     
     UIImageView *iconImg = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 60, 60)];
-    [iconImg sd_setImageWithURL:[NSURL URLWithString:self.imgurl] placeholderImage:[UIImage imageNamed:@"my_icon"]];
+    [iconImg sd_setImageWithURL:[NSURL URLWithString:[self.imgurl imgUrlUpdate]] placeholderImage:[UIImage imageNamed:@"my_icon"]];
     iconImg.layer.cornerRadius = 30;
     iconImg.layer.masksToBounds=YES;
     [view addSubview:iconImg];

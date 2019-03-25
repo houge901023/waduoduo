@@ -394,6 +394,8 @@ static NSDateFormatter *YYYYMMddDot;
     return NO;
 }
 
+
+
 // 验证字符串里面是否都是数字
 - (BOOL)isPureNumber {
     NSUInteger length = [self length];
@@ -443,6 +445,14 @@ static NSDateFormatter *YYYYMMddDot;
     CFRelease(uuidRef);
 
     return (__bridge_transfer NSString *) uuid;
+}
+
+- (NSString *)imgUrlUpdate {
+    NSString *str = self;
+    if ([str rangeOfString:@"dn-7Rm1IitH.qbox.me"].location != NSNotFound) {
+        str = [self stringByReplacingOccurrencesOfString:@"dn-7Rm1IitH.qbox.me"withString:@"lc-7Rm1IitH.cn-n1.lcfile.com"];
+    }
+    return str;
 }
 
 @end

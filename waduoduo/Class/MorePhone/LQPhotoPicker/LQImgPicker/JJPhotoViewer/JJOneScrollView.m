@@ -133,7 +133,7 @@
          self.userInteractionEnabled = YES ;
         
             //变换完动画 从网络开始加载图
-            [self.mainImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:self.mainImageView.image       options:SDWebImageRetryFailed|SDWebImageLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            [self.mainImageView sd_setImageWithURL:[NSURL URLWithString:[urlStr imgUrlUpdate]] placeholderImage:self.mainImageView.image       options:SDWebImageRetryFailed|SDWebImageLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                 
                 NSLog(@"%ld  :  %ld",(long)receivedSize,(long)expectedSize);
                 

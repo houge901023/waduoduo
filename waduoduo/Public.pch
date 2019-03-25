@@ -27,6 +27,7 @@
 #import "XYString.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
+#import "NSString+WT.h"
 #import "MainNavigationController.h"
 #import <AVOSCloud.h>
 #import "NSDate+Utils.h"
@@ -142,7 +143,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:transparentValue]
 #define iPhone5s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
 #define iPhone6s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(750, 1334), [[UIScreen mainScreen] currentMode].size) : NO)
 #define iPhone6Plus ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size) : NO)
-#define iPhoneX ([UIScreen mainScreen].bounds.size.height == 812)
+#define iPhoneX ([UIScreen mainScreen].bounds.size.height == 812 || [UIScreen mainScreen].bounds.size.height == 896)
 
 //判断
 #define equipmentSize ([[UIScreen mainScreen] currentMode].size)

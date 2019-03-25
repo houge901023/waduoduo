@@ -134,7 +134,7 @@
                     model.content = [NSString stringWithFormat:@"%@",object[@"content"]];
                     model.lable = [NSString stringWithFormat:@"%@",object[@"lable"]];
                     model.date = [NSString stringWithFormat:@"%@",object[@"date"]];
-                    model.imgurlArr = [object[@"image"] componentsSeparatedByString:@","];
+                    model.imgurlArr = [[object[@"image"] imgUrlUpdate] componentsSeparatedByString:@","];
                     model.dele = self.Personal;
                     [self.dataArr addObject:model];
                 }
