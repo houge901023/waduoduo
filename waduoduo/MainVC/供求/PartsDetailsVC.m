@@ -65,7 +65,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
 - (UIButton *)backHomeBtn {
     if (_backHomeBtn==nil) {
         
-        _backHomeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH-80, SCREEN_HEIGHT-120, 50, 50)];
+        _backHomeBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH-80, SCREEN_HEIGHT-70-JLTabH, 50, 50)];
         _backHomeBtn.backgroundColor = color(0, 0, 0, 0.6);
         _backHomeBtn.titleLabel.font = [UIFont systemFontOfSize:13];
         [_backHomeBtn setTitle:@"首页" forState:UIControlStateNormal];

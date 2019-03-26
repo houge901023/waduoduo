@@ -63,7 +63,7 @@
         _BJView = [[UIView alloc] initWithFrame:CGRectMake(0, TWH, TWW, BJH)];
         [self addSubview:_BJView];
         
-        UIView *tool = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, TWW, toolH)];
+        UIView *tool = [[UIView alloc] initWithFrame:CGRectMake(0, 0, TWW, toolH)];
         tool.backgroundColor = TWRGB(237, 236, 234);
         [_BJView addSubview:tool];
         

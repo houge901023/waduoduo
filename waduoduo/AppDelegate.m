@@ -52,6 +52,20 @@
     NSLog(@"远程推动内容=%@",remoteNotificationUserInfo);
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
+//    /**
+//     * 获取融云推送服务扩展字段
+//     * nil 表示该启动事件不包含来自融云的推送服务
+//     */
+//    NSDictionary *pushServiceData = [[RCIMClient sharedRCIMClient] getPushExtraFromLaunchOptions:launchOptions];
+//    if (pushServiceData) {
+//        NSLog(@"该启动事件包含来自融云的推送服务");
+//        for (id key in [pushServiceData allKeys]) {
+//            NSLog(@"%@", pushServiceData[key]);
+//        }
+//    } else {
+//        NSLog(@"该启动事件不包含来自融云的推送服务");
+//    }
+    
     
     IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
     manager.enable = YES;
