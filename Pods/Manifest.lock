@@ -16,61 +16,75 @@ PODS:
     - AFNetworking/NSURLSession
   - AVOSCloud (3.6.1)
   - pop (1.0.9)
-  - POP+MCAnimate (2.0.1):
+  - "POP+MCAnimate (2.0.1)":
     - pop (~> 1.0)
-    - POP+MCAnimate/Animations (= 2.0.1)
-    - POP+MCAnimate/Group (= 2.0.1)
-    - POP+MCAnimate/Internal (= 2.0.1)
-    - POP+MCAnimate/Shorthand (= 2.0.1)
-    - POP+MCAnimate/Velocity (= 2.0.1)
-  - POP+MCAnimate/Animations (2.0.1):
+    - "POP+MCAnimate/Animations (= 2.0.1)"
+    - "POP+MCAnimate/Group (= 2.0.1)"
+    - "POP+MCAnimate/Internal (= 2.0.1)"
+    - "POP+MCAnimate/Shorthand (= 2.0.1)"
+    - "POP+MCAnimate/Velocity (= 2.0.1)"
+  - "POP+MCAnimate/Animations (2.0.1)":
     - pop (~> 1.0)
-    - POP+MCAnimate/Group
-    - POP+MCAnimate/Internal
-    - POP+MCAnimate/Shorthand
-    - POP+MCAnimate/Velocity
-  - POP+MCAnimate/Group (2.0.1):
+    - "POP+MCAnimate/Group"
+    - "POP+MCAnimate/Internal"
+    - "POP+MCAnimate/Shorthand"
+    - "POP+MCAnimate/Velocity"
+  - "POP+MCAnimate/Group (2.0.1)":
     - pop (~> 1.0)
-  - POP+MCAnimate/Internal (2.0.1):
+  - "POP+MCAnimate/Internal (2.0.1)":
     - pop (~> 1.0)
-  - POP+MCAnimate/Shorthand (2.0.1):
+  - "POP+MCAnimate/Shorthand (2.0.1)":
     - pop (~> 1.0)
-  - POP+MCAnimate/Velocity (2.0.1):
+  - "POP+MCAnimate/Velocity (2.0.1)":
     - pop (~> 1.0)
-    - POP+MCAnimate/Internal
-  - RongCloudIMKit (2.7.3)
+    - "POP+MCAnimate/Internal"
+  - RongCloudIM (2.9.8):
+    - RongCloudIM/IMKit (= 2.9.8)
+    - RongCloudIM/IMLib (= 2.9.8)
+    - RongCloudIM/RedPacket (= 2.9.8)
+    - RongCloudIM/RongSticker (= 2.9.8)
+    - RongCloudIM/Sight (= 2.9.8)
+  - RongCloudIM/IMKit (2.9.8):
+    - RongCloudIM/IMLib
+  - RongCloudIM/IMLib (2.9.8)
+  - RongCloudIM/RedPacket (2.9.8):
+    - RongCloudIM/IMKit
+  - RongCloudIM/RongSticker (2.9.8):
+    - RongCloudIM/IMKit
+  - RongCloudIM/Sight (2.9.8):
+    - RongCloudIM/IMLib
   - SDAutoLayout (2.1.7)
-  - SDWebImage+ExtensionSupport (3.7.1.2):
-    - SDWebImage+ExtensionSupport/Core (= 3.7.1.2)
-  - SDWebImage+ExtensionSupport/Core (3.7.1.2)
-  - UMengUShare/Core (6.0.3):
-    - UMengUShare/Network
-  - UMengUShare/Network (6.0.3)
-  - UMengUShare/Social/QQ (6.0.3):
-    - UMengUShare/Core
-  - UMengUShare/Social/WeChat (6.0.3):
-    - UMengUShare/Core
+  - "SDWebImage+ExtensionSupport (3.7.1.2)":
+    - "SDWebImage+ExtensionSupport/Core (= 3.7.1.2)"
+  - "SDWebImage+ExtensionSupport/Core (3.7.1.2)"
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
   - AVOSCloud (~> 3.6.1)
-  - POP+MCAnimate (~> 2.0.1)
-  - RongCloudIMKit (~> 2.7.3)
+  - "POP+MCAnimate (~> 2.0.1)"
+  - RongCloudIM
   - SDAutoLayout (~> 2.1.7)
-  - SDWebImage+ExtensionSupport (~> 3.7.1.2)
-  - UMengUShare/Social/QQ
-  - UMengUShare/Social/WeChat
+  - "SDWebImage+ExtensionSupport (~> 3.7.1.2)"
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - AVOSCloud
+    - pop
+    - "POP+MCAnimate"
+    - RongCloudIM
+    - SDAutoLayout
+    - "SDWebImage+ExtensionSupport"
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   AVOSCloud: cc9b567da2d30f07e3da1e4db682cad9ff56a1b6
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
-  POP+MCAnimate: a99e209148c602512de487f1160a44bf78572024
-  RongCloudIMKit: 0b93700b17d224c7c213815b8a23a9c356fe20e2
+  "POP+MCAnimate": a99e209148c602512de487f1160a44bf78572024
+  RongCloudIM: dcfa8c4fe11e992c0d187f7dda71f2ce5bfae4d1
   SDAutoLayout: e9b36d04b8c0b504762a04d76fbbe5108944297a
-  SDWebImage+ExtensionSupport: 72b57456f83ccd7996b258912c749a8275309b74
-  UMengUShare: f231fc086d789d4e560a5090dcc13a2db15c686d
+  "SDWebImage+ExtensionSupport": 72b57456f83ccd7996b258912c749a8275309b74
 
-PODFILE CHECKSUM: d7d90c7529fccd864df54f924e4032cf14dc1ca0
+PODFILE CHECKSUM: ee0f45c1aa5998f2fdccedd20ee8f09972b3fae9
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.5.3

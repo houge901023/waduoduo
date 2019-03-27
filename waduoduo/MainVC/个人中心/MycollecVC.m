@@ -135,7 +135,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
     // image 为 File
     [query includeKey:@"image"];
     
-    [SVProgressHUD showSuccessWithStatus:nil];
+    [SVProgressHUD showWithStatus:nil];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         NSLog(@"数组个数＝%ld",objects.count);
         if (!error) {

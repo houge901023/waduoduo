@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "waduoduo/AppDelegate.m"
-            timestampString = "575202332.536599"
+            filePath = "Pods/AVOSCloud/AVOS/AVOSCloud/Object/AVObject.m"
+            timestampString = "575276109.679864"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
-            landmarkName = "-application:didRegisterUserNotificationSettings:"
+            startingLineNumber = "1318"
+            endingLineNumber = "1318"
+            landmarkName = "-refresh"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

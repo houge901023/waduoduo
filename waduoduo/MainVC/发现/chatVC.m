@@ -21,12 +21,12 @@
     [[RCIM sharedRCIM] setUserInfoDataSource:self];
     
     //工具栏增加发送文件
-    UIImage *imageFile = [RCKitUtility imageNamed:@"actionbar_file_icon"
-                                         ofBundle:@"RongCloud.bundle"];
-    [self.chatSessionInputBarControl.pluginBoardView insertItemWithImage:imageFile
-                                        title:@"发送文件"
-                                      atIndex:3
-                                          tag:PLUGIN_BOARD_ITEM_FILE_TAG];
+//    UIImage *imageFile = [RCKitUtility imageNamed:@"actionbar_file_icon"
+//                                         ofBundle:@"RongCloud.bundle"];
+//    [self.chatSessionInputBarControl.pluginBoardView insertItemWithImage:imageFile
+//                                        title:@"发送文件"
+//                                      atIndex:3
+//                                          tag:PLUGIN_BOARD_ITEM_FILE_TAG];
     
     //用户自己的头像
     RCUserInfo *use = [[RCUserInfo alloc] init];
@@ -34,6 +34,10 @@
     use.portraitUri = avoidNull([AVUser currentUser][@"iconHead"]);
     [RCIM sharedRCIM].currentUserInfo = use;
 
+    [self.chatSessionInputBarControl.pluginBoardView removeItemAtIndex:5];
+    [self.chatSessionInputBarControl.pluginBoardView removeItemAtIndex:4];
+    [self.chatSessionInputBarControl.pluginBoardView removeItemAtIndex:3];
+    [self.chatSessionInputBarControl.pluginBoardView removeItemAtIndex:2];
 }
 
 #pragma mark -- 点击聊天界面头像

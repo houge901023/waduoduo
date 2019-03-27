@@ -98,8 +98,8 @@
     
     
     NSArray *titles = @[@"供应", @"求购", @"", @"消息", @"我的"];
-    NSArray *images = @[@"3_10", @"3_16", @"",@"3_27", @"3_28"];
-    NSArray *selectedImages = @[@"3_10_H", @"3_16_H", @"", @"3_27_H", @"3_28_H"];
+    NSArray *images = @[@"ntab_1", @"ntab_2", @"",@"ntab_3", @"ntab_4"];
+    NSArray *selectedImages = @[@"ntab_1_ed", @"ntab_2_ed", @"", @"ntab_3_ed", @"ntab_4_ed"];
     
     PartsVC *home = [[PartsVC alloc] init];
     home.title = @"挖多多";
