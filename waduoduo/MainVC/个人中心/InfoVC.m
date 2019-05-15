@@ -10,13 +10,20 @@
 
 @interface InfoVC ()
 
+@property (weak, nonatomic) IBOutlet UILabel *contextLB;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *top;
+
 @end
 
 @implementation InfoVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.title = @"帮助";
+    
+    self.top.constant = JLNavH+15;
+    self.contextLB.text = self.str;
+
 }
 
 /*

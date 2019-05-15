@@ -93,7 +93,7 @@
     if ([XYString isValidateMobile:phoneTF.text]) {
         [self setYZM:sender];
     }else {
-        [SVProgressHUD showImage:nil status:@"手机号格式错误"];
+        [EasyTextView showText:@"手机号格式错误"];
     }
 }
 
@@ -112,14 +112,14 @@
     
     [AVOSCloud requestSmsCodeWithPhoneNumber:phoneTF.text callback:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded) {
-            [SVProgressHUD showSuccessWithStatus:@"已发送"];
+            [EasyLoadingView showLoadingImage:@"已发送"];
             [sender startWithTime:60 title:@"获取验证码" countDownTitle:@"s重新获取" mainColor:mainBlue countColor:[UIColor grayColor]];
         }else {
             NSString *msg = [NSString stringWithFormat:@"错误码：%ld",error.code];
             if ([XYString isObjectNull:msg]) {
-                [SVProgressHUD showErrorWithStatus:@"发送失败"];
+                [EasyTextView showErrorText:@"发送失败"];
             }else {
-                [SVProgressHUD showImage:nil status:msg];
+                [EasyTextView showErrorText:msg];
             }
         }
     }];
@@ -137,14 +137,14 @@
         [AVUser requestPasswordResetWithPhoneNumber:username block:^(BOOL succeeded, NSError * _Nullable error) {
             [AVUser resetPasswordWithSmsCode:yzm newPassword:password block:^(BOOL succeeded, NSError * _Nullable error) {
                 if (succeeded) {
-                    [SVProgressHUD showSuccessWithStatus:@"修改成功"];
+                    [EasyTextView showSuccessText:@"修改成功"];
                     [self.navigationController popViewControllerAnimated:YES];
                 }else {
                     NSString *msg = [NSString stringWithFormat:@"%@",error.userInfo[@"error"]];
                     if ([XYString isObjectNull:msg]) {
-                        [SVProgressHUD showMessage:@"修改失败"];
+                        [EasyTextView showErrorText:@"修改失败"];
                     }else {
-                        [SVProgressHUD showMessage:msg];
+                        [EasyTextView showErrorText:msg];
                     }
                 }
             }];
@@ -154,11 +154,11 @@
 
 - (void)mainAction {
     if (phoneTF.text.length==0) {
-        [SVProgressHUD showImage:nil status:@"手机号不能为空"];
+        [EasyTextView showText:@"手机号不能为空"];
     }else if (VerificationTF.text.length==0) {
-        [SVProgressHUD showImage:nil status:@"验证码不能为空"];
+        [EasyTextView showText:@"验证码不能为空"];
     }else if (passTF.text.length==0) {
-        [SVProgressHUD showImage:nil status:@"密码不能为空"];
+        [EasyTextView showText:@"密码不能为空"];
     }else {
         [self request];
     }

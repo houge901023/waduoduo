@@ -14,7 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - AVOSCloud (3.6.1)
+  - AVOSCloud (11.6.1)
   - pop (1.0.9)
   - "POP+MCAnimate (2.0.1)":
     - pop (~> 1.0)
@@ -57,14 +57,16 @@ PODS:
   - "SDWebImage+ExtensionSupport (3.7.1.2)":
     - "SDWebImage+ExtensionSupport/Core (= 3.7.1.2)"
   - "SDWebImage+ExtensionSupport/Core (3.7.1.2)"
+  - XMLReader (0.0.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
-  - AVOSCloud (~> 3.6.1)
+  - AVOSCloud (~> 11.6.1)
   - "POP+MCAnimate (~> 2.0.1)"
   - RongCloudIM
   - SDAutoLayout (~> 2.1.7)
   - "SDWebImage+ExtensionSupport (~> 3.7.1.2)"
+  - XMLReader (~> 0.0.2)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -75,16 +77,18 @@ SPEC REPOS:
     - RongCloudIM
     - SDAutoLayout
     - "SDWebImage+ExtensionSupport"
+    - XMLReader
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  AVOSCloud: cc9b567da2d30f07e3da1e4db682cad9ff56a1b6
+  AVOSCloud: 75fe137e0d4eae392047824cea66c9b99a2ea574
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   "POP+MCAnimate": a99e209148c602512de487f1160a44bf78572024
   RongCloudIM: dcfa8c4fe11e992c0d187f7dda71f2ce5bfae4d1
   SDAutoLayout: e9b36d04b8c0b504762a04d76fbbe5108944297a
   "SDWebImage+ExtensionSupport": 72b57456f83ccd7996b258912c749a8275309b74
+  XMLReader: c7e54b707c368e2fa545d8313276b4de13a36ff5
 
-PODFILE CHECKSUM: ee0f45c1aa5998f2fdccedd20ee8f09972b3fae9
+PODFILE CHECKSUM: 5ba6e89c3f131aaeab9bdfc9e2c996811685974f
 
 COCOAPODS: 1.5.3

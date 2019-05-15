@@ -36,8 +36,6 @@
     [segM addTarget:self action:@selector(segmAction:) forControlEvents:UIControlEventValueChanged];
     
     self.parts.view.hidden = NO;
-    self.demand.view.hidden = YES;
-
 }
 
 - (void)segmAction:(UISegmentedControl *)sender {
@@ -67,7 +65,7 @@
     if (_demand==nil) {
         _demand = [[DemandVC alloc] init];
         _demand.userId = self.userId;
-        _demand.Personal = YES;
+        _demand.Personal = self.Personal;
         [self addChildViewController:_demand];
         [self.view addSubview:_demand.view];
     }

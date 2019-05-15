@@ -12,7 +12,10 @@
 #import "SupplyVC.h"
 #import "MycollecVC.h"
 #import "feedbackVC.h"
+#import "PrivacyVC.h"
 #import "versonVC.h"
+#import "ViewControllerPDF.h"
+#import "customerListVC.h"
 
 @interface PersonalVC () <UITableViewDelegate,UITableViewDataSource>
 {
@@ -30,6 +33,7 @@
     [super viewDidLoad];
     self.navBarView.hidden = YES;
     [self setup];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -45,6 +49,7 @@
         nameLB.text = @"点击登录";
         [icon setImage:[UIImage imageNamed:@"my_icon"]];
     }
+
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle{
@@ -53,7 +58,7 @@
 
 - (NSArray *)titleArr {
     if (_titleArr==nil) {
-        _titleArr = [[NSMutableArray alloc] initWithObjects:@[@"我的供求",@"我的收藏"],@[@"意见反馈",@"关于我们"], nil];
+        _titleArr = [[NSMutableArray alloc] initWithObjects:@[@"我的供求",@"我的收藏",@"我的客户"],@[@"意见反馈",@"隐私政策",@"关于我们"], nil];
     }
     return _titleArr;
 }
@@ -112,7 +117,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section==0&&indexPath.row==0) {
         if ([AVUser currentUser]==nil) {
-            [SVProgressHUD showMessage:@"请先登录"];
+            [EasyTextView showInfoText:@"请先登录"];
             return;
         }
         SupplyVC *MVC = [[SupplyVC alloc] init];
@@ -121,19 +126,29 @@
         [self.navigationController pushViewController:MVC animated:YES];
     }else if (indexPath.section==0&&indexPath.row==1) {
         if ([AVUser currentUser]==nil) {
-            [SVProgressHUD showMessage:@"请先登录"];
+            [EasyTextView showInfoText:@"请先登录"];
             return;
         }
         MycollecVC *MVC = [[MycollecVC alloc] init];
         [self.navigationController pushViewController:MVC animated:YES];
+    }else if (indexPath.section==0&&indexPath.row==2) {
+        if ([AVUser currentUser]==nil) {
+            [EasyTextView showInfoText:@"请先登录"];
+            return;
+        }
+        customerListVC *MVC = [[customerListVC alloc] init];
+        [self.navigationController pushViewController:MVC animated:YES];
     }else if (indexPath.section==1&&indexPath.row==0) {
         if ([AVUser currentUser]==nil) {
-            [SVProgressHUD showMessage:@"请先登录"];
+            [EasyTextView showInfoText:@"请先登录"];
             return;
         }
         feedbackVC *MVC = [[feedbackVC alloc] init];
         [self.navigationController pushViewController:MVC animated:YES];
     }else if (indexPath.section==1&&indexPath.row==1) {
+        PrivacyVC *MVC = [[PrivacyVC alloc] init];
+        [self.navigationController pushViewController:MVC animated:YES];
+    }else if (indexPath.section==1&&indexPath.row==2) {
         versonVC *MVC = [[versonVC alloc] init];
         [self.navigationController pushViewController:MVC animated:YES];
     }
@@ -145,7 +160,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ID];
     }
     
-    cell.imageView.image = [UIImage imageNamed:@[@[@"supply_1",@"collection"],@[@"opinion",@"version"]][indexPath.section][indexPath.row]];
+    cell.imageView.image = [UIImage imageNamed:@[@[@"supply_1",@"collection",@"shebei"],@[@"opinion",@"my_ys",@"version"]][indexPath.section][indexPath.row]];
     
     cell.textLabel.font = [UIFont systemFontOfSize:14];
     cell.textLabel.textColor = titleC1;

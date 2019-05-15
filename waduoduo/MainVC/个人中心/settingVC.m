@@ -89,10 +89,10 @@
     if (indexPath.section==2) {
         
         [AVQuery clearAllCachedResults];
-        [AVFile clearAllCachedFiles];
+        [AVFile clearAllPersistentCache];
         [self clearTmpPics];
         [tableView reloadData];
-        [SVProgressHUD showSuccessWithStatus:@"清理成功"];
+        [EasyTextView showSuccessText:@"清理成功"];
     }else if (indexPath.section==3) {
         
         LQPopUpView *popUpView = [[LQPopUpView alloc] initWithTitle:@"提示" message:@"是否确定退出登录"];

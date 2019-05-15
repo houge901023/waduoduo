@@ -1,1 +1,1 @@
-../../../AVOSCloud/AVOS/AVOSCloud/Router/LCRouter_internal.h
+../../../AVOSCloud/AVOS/AVOSCloud/Router/LCRouter_Internal.h

@@ -81,4 +81,6 @@
 - (NSString *)string;
 - (NSString *)stringCutSeconds;
 
++ (NSDate *)dateFromUTCString:(NSString *)utcDateString;
+
 @end

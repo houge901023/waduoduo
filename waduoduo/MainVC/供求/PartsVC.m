@@ -11,9 +11,11 @@
 #import "MJRefresh.h"
 #import <UIImageView+WebCache.h>
 #import "PartsDetailsVC.h"
+#import "infoVC.h"
 //第一步，导入头文件
 #import "NewEditionTestManager.h"
 #import "AppStoreInfoModel.h"
+#import <XMLReader.h>
 
 static NSString * CellIdentifier = @"CellIdentifier";
 
@@ -32,8 +34,8 @@ static NSString * CellIdentifier = @"CellIdentifier";
     NSString *classStr;
 }
 
-@property (nonatomic ,strong) UIButton *imgNil;
 @property (strong, nonatomic) NSMutableArray *products;
+@property (nonatomic ,strong) NSString *infoStr;
 
 @end
 
@@ -49,10 +51,13 @@ static NSString * CellIdentifier = @"CellIdentifier";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    modelStr = @"挖机品牌";
+    classStr = @"配件分类";
+    
     [self setUICollectionView];
+    [self request:YES];
     [self setdropdownView];
     [self setTitleView];
-    [self request];
 //    [self newGuidelines];
     
     //第二步  appID:应用在Store里面的ID (应用的AppStore地址里面可获取)
@@ -80,6 +85,21 @@ static NSString * CellIdentifier = @"CellIdentifier";
             APP_DELE.newV = NO;
         }
     }];//2种用法,自定义Alert
+    
+
+    if ([AVUser currentUser]) {
+        [self findPower];
+    }
+    
+    AVQuery *query = [AVQuery queryWithClassName:@"AD"];
+    [query orderByDescending:@"createdAt"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            if (objects.count>0) {
+                [[NSUserDefaults standardUserDefaults] setObject:objects[0][@"image_url"] forKey:StartAD_imageUrl];
+            }
+        }
+    }];
 }
 
 #pragma mark -- 新手指引
@@ -116,9 +136,6 @@ static NSString * CellIdentifier = @"CellIdentifier";
 #pragma mark -- 设置标题栏选项
 - (void)setTitleView {
     
-    modelStr = @"挖机品牌";
-    classStr = @"配件分类";
-    
     UIView *titleV = [[UIView alloc] initWithFrame:CGRectMake(0, JLNavH, SCREEN_WIDTH, 40)];
     titleV.backgroundColor = [UIColor whiteColor];
     [self PixeH:CGPointMake(0, 39) lenght:SCREEN_WIDTH add:titleV];
@@ -149,25 +166,11 @@ static NSString * CellIdentifier = @"CellIdentifier";
 #pragma mark -- 下拉tableView
 - (void)setdropdownView {
     
-    _imgNil = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
-    _imgNil.hidden = YES;
-    _imgNil.userInteractionEnabled = NO;
-    _imgNil.center = CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-    [_imgNil setImage:[UIImage imageNamed:@"data_nil"] forState:UIControlStateNormal];
-    [_imgNil setTitle:@"空，快去发布～" forState:UIControlStateNormal];
-    [_imgNil setTitleColor:titleC3 forState:UIControlStateNormal];
-    _imgNil.titleLabel.font = [UIFont systemFontOfSize:12];
-    [self.view addSubview:_imgNil];
-    
-    CGFloat w = [XYString WidthForString:@"空，快去发布～" withSizeOfFont:12];
-    [_imgNil setTitleEdgeInsets:UIEdgeInsetsMake(60, 0, 0, 80)];
-    [_imgNil setImageEdgeInsets:UIEdgeInsetsMake(0, w, 40, 0)];
-    
     modelsArr = @[@"全部",@"神钢",@"小松",@"卡特彼勒",@"日立",@"沃尔沃",
                   @"凯斯",@"住友",@"斗山",@"现代",@"三一",@"徐工",
                   @"柳工",@"龙工",@"玉柴",@"久保田",@"力士德",
                   @"利勃海尔",@"山河智能",@"其它"];
-    classArr = @[@"全部",@"保养件",@"液压件",@"发动机配件",@"驾驶室配件",@"电器件",@"底盘件",@"其他"];
+    classArr = @[@"全部",@"保养件",@"液压件",@"发动机配件",@"驾驶室配件",@"电器件",@"底盘件",@"整机",@"其他"];
     
     dropBackV = [[UIView alloc] initWithFrame:CGRectMake(0, 35+JLNavH, SCREEN_WIDTH, SCREEN_HEIGHT-35)];
     dropBackV.backgroundColor = color(0, 0, 0, 0.3);
@@ -214,7 +217,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
 #pragma mark -- TableView 的代理
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (staBtn) {
-        return 8;
+        return 9;
     }else {
         return 20;
     }
@@ -260,7 +263,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
         }
         modelStr = sender.titleLabel.text;
     }
-    [self request];
+    [self request:NO];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *ID = @"cell";
@@ -291,7 +294,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
     AVObject *product = self.products[indexPath.row];
     NSString *imgurl = [avoidNull(product[@"image"]) componentsSeparatedByString:@","][0];
     
-    [cell.imageV sd_setImageWithURL:[NSURL URLWithString:avoidNull([imgurl imgUrlUpdate])] placeholderImage:[UIImage imageNamed:@"img_ default"]];
+    [cell.imageV sd_setImageWithURL:[NSURL URLWithString:avoidNull([imgurl imgUrlUpdate])] placeholderImage:[UIImage imageNamed:@"wdd_placeholder"]];
     cell.titleLB.text = [product objectForKey:@"title"];
     cell.nameLB.text = [NSString stringWithFormat:@"价格：%@元",avoidNull([product objectForKey:@"price"])];
     
@@ -361,10 +364,10 @@ static NSString * CellIdentifier = @"CellIdentifier";
 }
 #pragma  mark -- 上拉加载
 - (void)loadLastData {
-    [self request];
+    [self request:NO];
 }
 
-- (void)request {
+- (void)request:(BOOL)show {
     
     AVQuery *query = [AVQuery queryWithClassName:@"Supply"];
     [query orderByDescending:@"createdAt"];//updatedAt createdAt
@@ -383,31 +386,54 @@ static NSString * CellIdentifier = @"CellIdentifier";
    
     [query includeKey:@"owner"];
     
-    [SVProgressHUD showWithStatus:nil];
-    
+
+    if (show) {
+        if (self.Personal) {
+            [EasyEmptyView hiddenEmptyInView:self.maskView];
+            [self showLoding:CGRectMake(0, JLNavH+35, SCREEN_WIDTH, SCREEN_HEIGHT-JLNavH-35) setText:@"正在加载中..."];
+        }else {
+            [EasyEmptyView hiddenEmptyInView:self.maskView];
+            [self showLoding:CGRectMake(0, JLNavH+35, SCREEN_WIDTH, SCREEN_HEIGHT-JLNavTab-35) setText:@"正在加载中..."];
+        }
+    }else {
+        if (self.products.count == 0) {
+            [self showLodingImage];
+        }
+    }
+
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        
         [mainCollectionView.mj_footer endRefreshing];
+        
         if (!error) {
-            NSLog(@"保存的信息=%@ 个数＝%ld",objects,objects.count);
-            if (objects.count) {
-                self.imgNil.hidden = YES;
-                [SVProgressHUD dismiss];
+            
+            if (objects.count>0) {
+                [self hidenLoding];
                 for (AVQuery *query in objects) {
                     [self.products addObject:query];
                 }
                 [mainCollectionView reloadData];
             }else {
                 if (self.products.count) {
-                    self.imgNil.hidden = YES;
-                    [SVProgressHUD showMessage:@"无更多配件信息"];
+                    [self hidenLoding];
+                    [EasyTextView showText:@"无更多配件信息"];
                 }else {
-                    self.imgNil.hidden = NO;
-                    [SVProgressHUD showMessage:@"暂时无数据"];
+                    [EasyEmptyView showEmptyInView:self.maskView callback:^(EasyEmptyView *view, UIButton *button, callbackType callbackType) {
+                        
+                    }];
                     [mainCollectionView reloadData];
                 }
             }
         }else {
-            [SVProgressHUD showMessage:@"服务器繁忙，稍后重试"];
+            
+            if (show) {
+                [EasyEmptyView showErrorInView:self.maskView callback:^(EasyEmptyView *view, UIButton *button, callbackType callbackType) {
+                    [EasyEmptyView hiddenEmptyInView:self.maskView];
+                    [self request:YES];
+                }];
+            }else {
+                [EasyTextView showErrorText:@"服务器繁忙，稍后重试"];
+            }
         }
     }];
 }
@@ -419,10 +445,66 @@ static NSString * CellIdentifier = @"CellIdentifier";
     view.hidden = YES;
 }
 
+#pragma mark -- 查看用户权限
+- (void)findPower {
+    
+    AVQuery *query = [AVQuery queryWithClassName:@"_User"];
+    [query orderByDescending:@"createdAt"];//updatedAt createdAt
+    [query whereKey:@"mobilePhoneNumber" hasPrefix:[AVUser currentUser].mobilePhoneNumber];
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        [mainCollectionView.mj_footer endRefreshing];
+        if (!error) {
+            NSLog(@"保存的信息=%@ 个数＝%ld",objects,objects.count);
+            if (objects.count>0) {
+                NSLog(@"%@",objects[0][@"Power"]);
+                NSString *code = objects[0][@"Power"];
+                self.infoStr = objects[0][@"model"];
+                if (code.length == 0) {
+                    return;
+                }
+                if (![code isEqualToString:@"1"]) {
+                    if ([code isEqualToString:@"2"]) {
+                        APP_DELE.noPower = YES;
+                        [self configureRightImage:@"home_jth"];
+                    }else {
+                        NSArray *titleArr = [code componentsSeparatedByString:@"-"];
+                        if (titleArr.count==3) {
+                            
+                            NSDate *setDate = [NSDate dateWithYear:[titleArr[0] integerValue] month:[titleArr[1] integerValue] day:[titleArr[2] integerValue] hour:0 minute:0 second:0];
+                            
+                            NSInteger a = [setDate daysBetweenCurrentDateAndDate];
+                            
+                            if (a<0) {
+                                APP_DELE.noPower = YES;
+                                [self configureRightImage:@"home_jth"];
+                            }
+                            
+                        }else {
+                            APP_DELE.noPower = YES;
+                            [self configureRightImage:@"home_jth"];
+                        }
+                    }
+                }
+                
+            }
+        }else {
+            
+        }
+    }];
+}
+
+- (void)rightNavAction {
+    InfoVC *MVC = [[InfoVC alloc] init];
+    MVC.str = self.infoStr;
+    [self.navigationController pushViewController:MVC animated:YES];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 /*
 #pragma mark - Navigation

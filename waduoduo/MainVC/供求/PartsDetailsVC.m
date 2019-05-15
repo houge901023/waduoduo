@@ -43,6 +43,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
     [self setup];
     [self setUICollectionView];
     [self request];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -97,7 +98,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
     //轮播图
     SDCycleScrollView *sdcy = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, kWidth5(180)) imageURLStringsGroup:imgurl];
     sdcy.bannerImageViewContentMode = UIViewContentModeScaleAspectFill;
-    sdcy.placeholderImage = [UIImage imageNamed:@"img_ default"];
+    sdcy.placeholderImage = [UIImage imageNamed:@"wdd_placeholder"];
     sdcy.showPageControl = NO;
     sdcy.delegate = self;
     sdcy.autoScroll = NO;
@@ -271,7 +272,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
     AVObject *product = self.products[indexPath.row];
     NSString *url = [product[@"image"] componentsSeparatedByString:@","][0];
     
-    [cell.imageV sd_setImageWithURL:[NSURL URLWithString:avoidNull([url imgUrlUpdate])] placeholderImage:[UIImage imageNamed:@"img_ default"]];
+    [cell.imageV sd_setImageWithURL:[NSURL URLWithString:avoidNull([url imgUrlUpdate])] placeholderImage:[UIImage imageNamed:@"wdd_placeholder"]];
     cell.titleLB.text = [product objectForKey:@"title"];
     cell.nameLB.text = [NSString stringWithFormat:@"价格：%@元",avoidNull([product objectForKey:@"price"])];
     
@@ -344,29 +345,25 @@ static NSString * CellIdentifier = @"CellIdentifier";
     
     [query includeKey:@"owner"];
     
-    [SVProgressHUD showWithStatus:nil];
+    [self showLoding:FrameNav setText:@"正在加载中..."];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
       
         if (!error) {
             NSLog(@"保存的信息=%@ 个数＝%ld",objects,objects.count);
+            [self hidenLoding];
             if (objects.count) {
-                [SVProgressHUD dismiss];
                 for (AVQuery *query in objects) {
                     [self.products addObject:query];
                 }
                 [mainCollectionView reloadData];
-            }else {
-                if (self.products.count) {
-                    [SVProgressHUD showMessage:@"无更多配件信息"];
-                }else {
-                    promptLB.hidden = NO;
-                    [SVProgressHUD dismiss];
-                    [mainCollectionView reloadData];
-                }
             }
         }else {
-            [SVProgressHUD showMessage:@"服务器繁忙，稍后重试"];
+            
+            [EasyEmptyView showErrorInView:self.maskView callback:^(EasyEmptyView *view, UIButton *button, callbackType callbackType) {
+                [EasyEmptyView hiddenEmptyInView:self.maskView];
+                [self request];
+            }];
         }
     }];
     
@@ -381,7 +378,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
         APP_DELE.refreshNum = 1;
     }else {
         if (collecArr.count>=10) {
-            [SVProgressHUD showMessage:@"最多支持收藏10件商品，请整理个人收藏"];
+            [EasyTextView showInfoText:@"最多支持收藏10件商品，请整理个人收藏"];
             return;
         }
         sender.selected = YES;
@@ -397,10 +394,10 @@ static NSString * CellIdentifier = @"CellIdentifier";
     [user setObject:collecArr forKey:@"collection"];
     [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded) {
-            [SVProgressHUD showSuccessWithStatus:msg];
+            [EasyTextView showSuccessText:msg];
             sender.selected = sele;
         }else {
-            [SVProgressHUD showMessage:[NSString stringWithFormat:@"错误码：%ld",error.code]];
+            [EasyTextView showErrorText:[NSString stringWithFormat:@"错误码：%ld",error.code]];
         }
     }];
 }
@@ -408,7 +405,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
 - (void)rightNavAction {
     
     if ([AVUser currentUser]==nil) {
-        [SVProgressHUD showMessage:@"请先登录"];
+        [EasyTextView showInfoText:@"请先登录"];
         return;
     }
     
@@ -426,16 +423,16 @@ static NSString * CellIdentifier = @"CellIdentifier";
             [self.object deleteInBackground];
             [self.navigationController popToRootViewControllerAnimated:YES];
             
-            NSArray *arr = [self.object[@"image"] componentsSeparatedByString:@","];
-            AVQuery *query = [AVQuery queryWithClassName:@"_File"];
-            [query whereKey:@"url" containedIn:arr];
-            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-                if (objects.count) {
-                    for (AVFile *file in objects) {
-                        [file deleteInBackground];
-                    }
-                }
-            }];
+//            NSArray *arr = [self.object[@"image"] componentsSeparatedByString:@","];
+//            AVQuery *query = [AVQuery queryWithClassName:@"_File"];
+//            [query whereKey:@"url" containedIn:arr];
+//            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+//                if (objects.count>0) {
+//                    for (AVFile *file in objects) {
+//                        [file deleteInBackground];
+//                    }
+//                }
+//            }];
         }];
         
         [popUpView showInView:self.view preferredStyle:LQPopUpViewStyleAlert];
@@ -443,8 +440,11 @@ static NSString * CellIdentifier = @"CellIdentifier";
         
     }else {
         if (APP_DELE.newV==NO) {
-            [SVProgressHUD showErrorWithStatus:@"请更新版本"];
+            [EasyTextView showInfoText:@"请更新版本"];
             return;
+        }
+        if (APP_DELE.noPower==YES) {
+            return [EasyTextView showInfoText:@"你暂时无权限访问"];
         }
         chatVC *conversationVC = [[chatVC alloc]init];
         conversationVC.conversationType = ConversationType_PRIVATE;

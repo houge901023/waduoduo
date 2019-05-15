@@ -52,7 +52,7 @@ static NSInteger const ButtonTag = 1000;
                                         10,
                                         tabbarImgWH,
                                         tabbarImgWH);
-        _inerImgView.image = [UIImage imageNamed:@"keyboard_add"];
+        _inerImgView.image = [UIImage imageNamed:@"ntab_add"];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                               action:@selector(tabbarClicked)];
         [_tabbar addSubview:_inerImgView];

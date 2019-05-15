@@ -14,7 +14,6 @@
 
 @interface DemandVC () <UITableViewDelegate,UITableViewDataSource,Demanddelegate,RCIMUserInfoDataSource>
 
-@property (nonatomic ,strong) UIButton *imgNil;
 @property (nonatomic ,strong) UITableView *mainTV;
 @property (nonatomic ,strong) NSMutableArray *dataArr;
 
@@ -26,21 +25,7 @@
     [super viewDidLoad];
     
     [self setup];
-    [self request];
-    
-    _imgNil = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
-    _imgNil.hidden = YES;
-    _imgNil.userInteractionEnabled = NO;
-    _imgNil.center = CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-    [_imgNil setImage:[UIImage imageNamed:@"data_nil"] forState:UIControlStateNormal];
-    [_imgNil setTitle:@"空，快去发布～" forState:UIControlStateNormal];
-    [_imgNil setTitleColor:titleC3 forState:UIControlStateNormal];
-    _imgNil.titleLabel.font = [UIFont systemFontOfSize:12];
-    [self.view addSubview:_imgNil];
-    
-    CGFloat w = [XYString WidthForString:@"空，快去发布～" withSizeOfFont:12];
-    [_imgNil setTitleEdgeInsets:UIEdgeInsetsMake(60, 0, 0, 80)];
-    [_imgNil setImageEdgeInsets:UIEdgeInsetsMake(0, w, 40, 0)];
+    [self request:YES];
 }
 
 - (NSMutableArray *)dataArr {
@@ -70,7 +55,7 @@
     
     _mainTV.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [self.dataArr removeAllObjects];
-        [self request];
+        [self request:NO];
     }];
     _mainTV.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadLastData)];
 
@@ -100,11 +85,11 @@
 }
 
 - (void)loadLastData {
-    [self request];
+    [self request:NO];
 }
 
 #pragma mark -- 网络请求
-- (void)request {
+- (void)request:(BOOL)show {
     
     AVQuery *query = [AVQuery queryWithClassName:@"Demand"];
     
@@ -117,15 +102,22 @@
     [query setSkip:self.dataArr.count];
     [query includeKey:@"owner"];
     
-    [SVProgressHUD showWithStatus:nil];
+    if (show) {
+        if (self.Personal) {
+            [self showLoding:FrameNav setText:@"正在加载中..."];
+        }else {
+            [self showLoding:FrameNavTab setText:@"正在加载中..."];
+        }
+    }
+    
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         [_mainTV.mj_header endRefreshing];
         [_mainTV.mj_footer endRefreshing];
+        
         if (!error) {
 
             if (objects.count) {
-                self.imgNil.hidden = YES;
-                [SVProgressHUD dismiss];
+                [self hidenLoding];
                 for (AVObject *object in objects) {
                     AVUser *user = object[@"owner"];
                     DemandModel *model = [[DemandModel alloc] init];
@@ -141,16 +133,25 @@
                 [_mainTV reloadData];
             }else {
                 if (self.dataArr.count) {
-                    self.imgNil.hidden = YES;
-                    [SVProgressHUD showMessage:@"无更多数据"];
+                    [self hidenLoding];
+                    [EasyTextView showText:@"无更多数据"];
                 }else {
-                    self.imgNil.hidden = NO;
+                    
+                    [EasyEmptyView showEmptyInView:self.maskView callback:^(EasyEmptyView *view, UIButton *button, callbackType callbackType) {
+                        
+                    }];
                     [_mainTV reloadData];
-                    [SVProgressHUD dismiss];
                 }
             }
         }else {
-            [SVProgressHUD showMessage:@"服务器繁忙，稍后重试"];
+            if (show) {
+                [EasyEmptyView showErrorInView:self.maskView callback:^(EasyEmptyView *view, UIButton *button, callbackType callbackType) {
+                    [EasyEmptyView hiddenEmptyInView:self.maskView];
+                    [self request:YES];
+                }];
+            }else {
+                [EasyTextView showErrorText:@"服务器繁忙，稍后重试"];
+            }
         }
     }];
 }
@@ -159,7 +160,7 @@
 - (void)setObjectId:(AVUser *)user set:(NSArray *)imgUrl set:(AVObject *)object {
    
     if ([AVUser currentUser]==nil) {
-        [SVProgressHUD showMessage:@"请先登录"];
+        [EasyTextView showInfoText:@"请先登录"];
         return;
     }
     if ([[AVUser currentUser].objectId isEqualToString:self.userId]) {
@@ -174,25 +175,27 @@
             [object deleteInBackground];
             [self.navigationController popToRootViewControllerAnimated:YES];
         
-            AVQuery *query = [AVQuery queryWithClassName:@"_File"];
-            [query whereKey:@"url" containedIn:imgUrl];
-            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-                if (objects.count) {
-                    for (AVFile *file in objects) {
-                        [file deleteInBackground];
-                    }
-                }
-            }];
+//            AVQuery *query = [AVQuery queryWithClassName:@"_File"];
+//            [query whereKey:@"url" containedIn:imgUrl];
+//            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+//                if (objects.count>0) {
+//                    for (AVFile *file in objects) {
+//                        [file deleteInBackground];
+//                    }
+//                }
+//            }];
         }];
         
         [popUpView showInView:self.view preferredStyle:LQPopUpViewStyleAlert];
     }else {
         
         if (APP_DELE.newV==NO) {
-            [SVProgressHUD showErrorWithStatus:@"请更新版本"];
+            [EasyTextView showInfoText:@"请更新版本"];
             return;
         }
-        
+        if (APP_DELE.noPower==YES) {
+            return [EasyTextView showInfoText:@"你暂时无权限访问"];
+        }
         chatVC *conversationVC = [[chatVC alloc]init];
         conversationVC.conversationType = ConversationType_PRIVATE;
         conversationVC.targetId = user.objectId;

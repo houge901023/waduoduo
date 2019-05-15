@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EasyEmptyView.h"
 
 @interface BaseVC : UIViewController
 
 @property (nonatomic, weak) UIView *navBarView;
+/** 加载视图蒙版*/
+@property (nonatomic ,strong) UIView *maskView;
 
 //自定义返回按钮
 - (void)configureLeft:(NSString *)string;
@@ -43,13 +46,15 @@
 //存值
 - (void)setUserifon:(id)value andKey:(NSString *)key;
 
-#pragma mark -- AFN网络框架
-- (void)post:(NSString *)URLString parameters:(NSMutableDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure;
-
 #pragma mark -- 创建主按钮
 - (UIButton *)setbutton:(NSString *)str setY:(CGFloat)Y add:(UIView *)view;
 - (void)mainAction;
 
 - (NSMutableAttributedString *)setAttri:(NSString *)str;
+
+#pragma mark -- 空数据加载框
+- (void)showLoding:(CGRect)frame setText:(NSString *)text;
+- (void)showLodingImage;
+- (void)hidenLoding;
 
 @end

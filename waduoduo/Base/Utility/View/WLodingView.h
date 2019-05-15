@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WLodingView : UIView
 
++ (void)LodingData:(NSString *)Message;
++ (void)SenderData:(NSString *)Message;
++ (void)dismiss;
+
 @end
 
 NS_ASSUME_NONNULL_END

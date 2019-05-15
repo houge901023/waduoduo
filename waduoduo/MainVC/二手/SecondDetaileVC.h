@@ -7,10 +7,14 @@
 //
 
 #import "BaseVC.h"
+#import "secondModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SecondDetaileVC : BaseVC
+
+@property (nonatomic ,strong) secondModel *model;
+@property (nonatomic ,assign) BOOL isHiden;
 
 @end
 

@@ -12,6 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface payInfoVC : BaseVC
 
+@property (weak, nonatomic) IBOutlet UILabel *titleLB;
+@property (weak, nonatomic) IBOutlet UIButton *phoneBtn;
+
+@property (nonatomic ,assign) BOOL isSuccess;
+@property (nonatomic ,strong) NSString *tel;
+
 @end
 
 NS_ASSUME_NONNULL_END

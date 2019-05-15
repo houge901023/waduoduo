@@ -117,22 +117,22 @@
 #pragma mark -- 右边点击事件
 - (void)rightNavAction {
     if (_nameTF.text.length==0) {
-        [SVProgressHUD showMessage:@"姓名不能为空"];
+        [EasyTextView showText:@"姓名不能为空"];
     }else if (_jobTF.text.length==0) {
-        [SVProgressHUD showMessage:@"职业不能为空"];
+        [EasyTextView showText:@"职业不能为空"];
     }else if (_addressTF.text.length==0) {
-        [SVProgressHUD showMessage:@"所在地不能为空"];
+        [EasyTextView showText:@"所在地不能为空"];
     }else {
         if (iconImage) {
         
             NSData *data = UIImageJPEGRepresentation(iconImage, 0.001);
             AVFile *file = [AVFile fileWithData:data];
-            [SVProgressHUD showWithStatus:@"上传中..."];
-            [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+            [EasyLoadingView showLoadingImage:@"上传中..."];
+            [file uploadWithCompletionHandler:^(BOOL succeeded, NSError * _Nullable error) {
                 if (succeeded) {
                     [self request:file.url];
                 }else {
-                    [SVProgressHUD showErrorWithStatus:@"头像提交失败，稍后重试"];
+                    [EasyTextView showErrorText:@"头像提交失败，稍后重试"];
                 }
             }];
             
@@ -156,18 +156,22 @@
     
     if (![XYString isObjectNull:imgurl]) {
         //删除之前头像
-        if (![XYString isObjectNull:nuser[@"iconHead"]]) {
-        
-            NSLog(@"之前头像链接=%@",nuser[@"iconHead"]);
-            AVQuery *query = [AVQuery queryWithClassName:@"_File"];
-            [query whereKey:@"url" hasPrefix:nuser[@"iconHead"]];
-            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-                if (objects.count) {
-                    AVFile *file = objects[0];
-                    [file deleteInBackground];
-                }
-            }];
-        }
+//        if (![XYString isObjectNull:nuser[@"iconHead"]]) {
+//        
+//            NSLog(@"之前头像链接=%@",nuser[@"iconHead"]);
+//            AVQuery *query = [AVQuery queryWithClassName:@"_File"];
+//            [query whereKey:@"url" hasPrefix:nuser[@"iconHead"]];
+//            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+//                if (objects.count>0) {
+//                    
+//                    AVFile *file = objects[0];
+//                    NSLog(@"ID=%@",objects[0]);
+//                    [file deleteWithCompletionHandler:^(BOOL succeeded, NSError * _Nullable error) {
+//
+//                    }];
+//                }
+//            }];
+//        }
         [nuser setObject:imgurl forKey:@"iconHead"];
         NSLog(@"之后头像链接=%@",nuser[@"iconHead"]);
     }
@@ -175,11 +179,11 @@
     [nuser saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded) {
             APP_DELE.refreshNum = 2;
-            [SVProgressHUD showSuccessWithStatus:@"修改成功"];
+            [EasyTextView showSuccessText:@"修改成功"];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }else {
             NSLog(@"失败信息=%@",error);
-            [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"修改失败，%@",error.userInfo[@"error"]]];
+            [EasyTextView showErrorText:[NSString stringWithFormat:@"修改失败，%@",error.userInfo[@"error"]]];
         }
     }];
 }

@@ -148,4 +148,10 @@
  */
 - (NSString *)imgUrlUpdate;
 
+#pragma mark -- 获取字符串
+/** 去除float后面无效的0 */
++ (NSString *)changeFloatWithFloat:(CGFloat)floatValue;
+/** 使用String去除float后面无效的0 */
++ (NSString *)changeFloatWithString:(NSString *)stringFloat;
+
 @end

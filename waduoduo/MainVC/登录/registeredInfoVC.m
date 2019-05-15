@@ -131,12 +131,12 @@
     
     if (companyTF.text.length==0) {
         if ([_type isEqualToString:@"2"]) {
-            [SVProgressHUD showImage:nil status:@"公司不能为空"];
+            [EasyTextView showText:@"公司不能为空"];
         }else {
-            [SVProgressHUD showImage:nil status:@"挖机机型不能为空"];
+            [EasyTextView showText:@"挖机机型不能为空"];
         }
     }else if (typeTF.text.length==0) {
-        [SVProgressHUD showImage:nil status:@"所在地不能为空"];
+        [EasyTextView showText:@"所在地不能为空"];
     }else {
         [self request];
     }
@@ -145,7 +145,7 @@
 #pragma mark -- 注册的网络请求
 - (void)request {
     
-    [SVProgressHUD showWithStatus:@"加载中..."];
+    [EasyLoadingView showLoadingImage:@"正在加载中..."];
     [AVUser signUpOrLoginWithMobilePhoneNumberInBackground:_phone smsCode:_Verification block:^(AVUser * _Nullable user, NSError * _Nullable error) {
         if (!error) {
             
@@ -174,23 +174,23 @@
                      username = 15281047296;
                      */
                     NSLog(@"用户＝%@",user);
-                    [SVProgressHUD showImage:nil status:@"注册成功"];
+                    [EasyTextView showSuccessText:@"注册成功"];
                     [self.navigationController popToRootViewControllerAnimated:YES];
                 } else {
                     NSString *msg = [NSString stringWithFormat:@"错误码：%ld",error.code];
                     if ([XYString isObjectNull:msg]) {
-                        [SVProgressHUD showImage:nil status:@"注册失败"];
+                        [EasyTextView showErrorText:@"注册失败"];
                     }else {
-                        [SVProgressHUD showImage:nil status:msg];
+                        [EasyTextView showErrorText:msg];
                     }
                 }
             }];
         }else {
             NSString *msg = [NSString stringWithFormat:@"错误码：%ld",error.code];
             if ([XYString isObjectNull:msg]) {
-                [SVProgressHUD showImage:nil status:@"注册失败"];
+                [EasyTextView showErrorText:@"注册失败"];
             }else {
-                [SVProgressHUD showImage:nil status:msg];
+                [EasyTextView showErrorText:msg];
             }
         }
     }];

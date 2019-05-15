@@ -8,8 +8,11 @@
 
 #import "BaseVC.h"
 #import <AFNetworking.h>
+#import <UIImage+GIF.h>
 
 @interface BaseVC ()
+
+@property (nonatomic ,strong)EasyLoadingView *Loding;
 
 @end
 
@@ -23,7 +26,11 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     [self navBarView];
+    
+    self.view.size = [UIScreen mainScreen].bounds.size;
+    
 }
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     //去除导航栏下方的横线
@@ -209,33 +216,6 @@
     [defaults synchronize];
 }
 
-#pragma mark -- AFN网络框架
-- (void)post:(NSString *)URLString parameters:(NSMutableDictionary *)parameters success:(void (^)(id))success failure:(void (^)(NSError *))failure
-{
-    
-    AFHTTPSessionManager *mar = [AFHTTPSessionManager manager];
-    mar.responseSerializer = [AFHTTPResponseSerializer serializer];
-    mar.requestSerializer.timeoutInterval = 30.f;
-    
-    NSLog(@"请求参数=%@",parameters);
-    
-    [mar POST:URLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        if (success) {
-            if (![XYString isObjectNull:dic]) {
-                success(dic);
-            }else {
-                [SVProgressHUD showMessage:@"服务器异常，稍后重试"];
-            }
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"请求失败＝%@",error);
-        [SVProgressHUD showMessage:@"服务器异常，稍后重试"];
-    }];
-}
-
 - (NSMutableAttributedString *)setAttri:(NSString *)str {
     
     NSMutableAttributedString *cons = [[NSMutableAttributedString alloc] initWithString:str];
@@ -261,5 +241,49 @@
 - (void)mainAction {
     
 }
+
+// 空界面加载框
+- (UIView *)maskView {
+    if (_maskView == nil) {
+        _maskView = [[UIView alloc] init];
+        _maskView.backgroundColor = [UIColor whiteColor];
+    }
+    return _maskView;
+}
+- (void)showLoding:(CGRect)frame setText:(NSString *)text {
+    
+    self.maskView.frame = frame;
+    self.maskView.hidden = NO;
+    self.maskView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.maskView];
+    
+    EasyLoadingView *Loding =
+    [EasyLoadingView showLoadingText:text config:^EasyLoadingConfig *{
+        EasyLoadingConfig *config = [EasyLoadingConfig shared].setLoadingType(LoadingShowTypePlayImagesLeft).setSuperReceiveEvent(NO).setBgColor([UIColor whiteColor]);
+        config.animationType = TextAnimationTypeNone;
+        return config;
+    }];
+    [self.maskView addSubview:Loding];
+    Loding.centerY = self.maskView.height/2;
+}
+- (void)showLodingImage {
+    
+    self.maskView.hidden = NO;
+    self.maskView.backgroundColor = [UIColor clearColor];
+    EasyLoadingView *Loding =
+    [EasyLoadingView showLoadingText:@"" config:^EasyLoadingConfig *{
+        EasyLoadingConfig *config = [EasyLoadingConfig shared].setLoadingType(LoadingShowTypePlayImagesLeft).setSuperReceiveEvent(YES);
+        config.animationType = TextAnimationTypeNone;
+        return config;
+    }];
+    [self.maskView addSubview:Loding];
+    Loding.centerY = self.maskView.height/2;
+}
+- (void)hidenLoding {
+    self.maskView.hidden = YES;
+    [EasyLoadingView hidenLoingInView:self.maskView];
+}
+
+
 
 @end

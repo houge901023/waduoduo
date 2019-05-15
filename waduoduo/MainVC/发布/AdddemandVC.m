@@ -52,7 +52,7 @@
     self.title = @"我的求购";
     [self configureRight:@"关闭"];
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64)];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, JLNavH, SCREEN_WIDTH, SCREEN_HEIGHT-JLNavH)];
     _scrollView.backgroundColor = [UIColor whiteColor];
     _scrollView.bounces = YES;
     _scrollView.scrollEnabled = YES;
@@ -246,10 +246,10 @@
 - (void)submitBtnClicked{
     
     if (_noteTextView.text.length==0) {
-        [SVProgressHUD showMessage:@"输入内容不能为空"];
+        [EasyTextView showText:@"输入内容不能为空"];
     }else {
         NSArray *imgArr = [self LQPhotoPicker_getBigImageArray];
-        [SVProgressHUD showWithStatus:@"上传中..."];
+        [EasyLoadingView showLoadingImage:@"上传中..."];
         if (imgArr.count) {
             [self thePicture:imgArr[0]];
         }else {
@@ -296,7 +296,7 @@
     
     indeximg ++;
     
-    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+    [file uploadWithCompletionHandler:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded) {
             [self.imgurlArr addObject:file.url];
             if (indeximg==[self LQPhotoPicker_getBigImageArray].count) {
@@ -306,17 +306,17 @@
             }
         }else {
             
-            AVQuery *query = [AVQuery queryWithClassName:@"_File"];
-            [query whereKey:@"url" containedIn:self.imgurlArr];
-            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-                if (objects.count) {
-                    for (AVFile *file in objects) {
-                        [file deleteInBackground];
-                    }
-                }
-            }];
+//            AVQuery *query = [AVQuery queryWithClassName:@"_File"];
+//            [query whereKey:@"url" containedIn:self.imgurlArr];
+//            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+//                if (objects.count) {
+//                    for (AVFile *file in objects) {
+//                        [file deleteInBackground];
+//                    }
+//                }
+//            }];
             [self.imgurlArr removeAllObjects];
-            [SVProgressHUD showErrorWithStatus:@"上传失败，稍后重试"];
+            [EasyTextView showErrorText:@"上传失败，稍后重试"];
         }
     }];
 }
@@ -338,10 +338,10 @@
     
     [product saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
-            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+            [EasyTextView showSuccessText:@"上传成功"];
             [self dismissViewControllerAnimated:YES completion:nil];
         } else {
-            [SVProgressHUD showErrorWithStatus:@"上传失败，稍后重试"];
+            [EasyTextView showErrorText:@"上传失败，稍后重试"];
         }
     }];
 }

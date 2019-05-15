@@ -21,4 +21,9 @@
     // Configure the view for the selected state
 }
 
+- (IBAction)teleAction:(UIButton *)sender {
+    NSMutableString * string = [[NSMutableString alloc] initWithFormat:@"tel:%@",sender.titleLabel.text];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:string]];
+}
+
 @end

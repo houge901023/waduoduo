@@ -51,7 +51,7 @@
     self.title = @"我的供应";
     [self configureRight:@"关闭"];
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64)];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, JLNavH, SCREEN_WIDTH, SCREEN_HEIGHT-JLNavH)];
     _scrollView.backgroundColor = [UIColor whiteColor];
     _scrollView.bounces = YES;
     _scrollView.scrollEnabled = YES;
@@ -264,7 +264,6 @@
 - (void)submitBtnClicked{
     
     NSArray *imgArr = [self LQPhotoPicker_getBigImageArray];
-    [SVProgressHUD showWithStatus:@"上传中..."];
     
     UITextField *nameTF = (UITextField *)[_scrollView viewWithTag:1999];
     UITextField *brandTF = (UITextField *)[_scrollView viewWithTag:2000];
@@ -274,22 +273,24 @@
     UITextField *priceTF = (UITextField *)[_scrollView viewWithTag:3001];
     
     if (nameTF.text.length==0) {
-        [SVProgressHUD showMessage:@"请输入配件名称"]; return;
+        [EasyTextView showText:@"请输入配件名称"]; return;
     }else if (brandTF.text.length==0) {
-        [SVProgressHUD showMessage:@"请选择挖机品牌"]; return;
+        [EasyTextView showText:@"请选择挖机品牌"]; return;
     }else if (qualityTF.text.length==0) {
-        [SVProgressHUD showMessage:@"请选择配件质量"]; return;
+        [EasyTextView showText:@"请选择配件质量"]; return;
     }else if (classTF.text.length==0) {
-        [SVProgressHUD showMessage:@"请选择配件分类"]; return;
+        [EasyTextView showText:@"请选择配件分类"]; return;
     }else if (priceTF.text.length==0) {
-        [SVProgressHUD showMessage:@"请输入配件价格"]; return;
+        [EasyTextView showText:@"请输入配件价格"]; return;
     }else if (modelTF.text.length==0) {
-        [SVProgressHUD showMessage:@"请输入挖机型号"]; return;
+        [EasyTextView showText:@"请输入挖机型号"]; return;
     }else if (_noteTextView.text.length==0) {
-        [SVProgressHUD showMessage:@"请输入配件详细信息"]; return;
+        [EasyTextView showText:@"请输入配件详细信息"]; return;
     }else if (imgArr.count==0) {
-        [SVProgressHUD showMessage:@"请上传至少一张配件图片"]; return;
+        [EasyTextView showText:@"请上传至少一张配件图片"]; return;
     }else {
+        
+        [EasyLoadingView showLoadingImage:@"上传中..."];
         [self thePicture:imgArr[0]];
     }
     
@@ -326,7 +327,7 @@
     }else if (sender.tag==1001){
         self.pickerView.dataSource = @[@"原装",@"副厂",@"拆车件",@"第二纯正",@"原装再生"];
     }else {
-        self.pickerView.dataSource = @[@"保养件",@"液压件",@"发动机配件",@"驾驶室配件",@"电器件",@"底盘件",@"其他"];
+        self.pickerView.dataSource = @[@"保养件",@"液压件",@"发动机配件",@"驾驶室配件",@"电器件",@"底盘件",@"整机",@"其他"];
     }
     
     UITextField *textTF = (UITextField *)[_scrollView viewWithTag:1000+sender.tag];
@@ -349,7 +350,7 @@
     
     indeximg ++;
     
-    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+    [file uploadWithCompletionHandler:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded) {
             [self.imgurlArr addObject:file.url];
             if (indeximg==[self LQPhotoPicker_getBigImageArray].count) {
@@ -358,17 +359,17 @@
                 [self thePicture:[self LQPhotoPicker_getBigImageArray][indeximg]];
             }
         }else {
-            AVQuery *query = [AVQuery queryWithClassName:@"_File"];
-            [query whereKey:@"url" containedIn:self.imgurlArr];
-            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-                if (objects.count) {
-                    for (AVFile *file in objects) {
-                        [file deleteInBackground];
-                    }
-                }
-            }];
+//            AVQuery *query = [AVQuery queryWithClassName:@"_File"];
+//            [query whereKey:@"url" containedIn:self.imgurlArr];
+//            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+//                if (objects.count) {
+//                    for (AVFile *file in objects) {
+//                        [file deleteInBackground];
+//                    }
+//                }
+//            }];
             [self.imgurlArr removeAllObjects];
-            [SVProgressHUD showErrorWithStatus:@"上传失败，稍后重试"];
+            [EasyTextView showErrorText:@"上传失败，稍后重试"];
         }
     }];
 }
@@ -402,10 +403,10 @@
     
     [product saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
-            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+            [EasyTextView showSuccessText:@"上传成功"];
             [self dismissViewControllerAnimated:YES completion:nil];
         } else {
-            [SVProgressHUD showErrorWithStatus:@"上传失败，稍后重试"];
+            [EasyTextView showErrorText:@"上传失败，稍后重试"];
         }
     }];
 }

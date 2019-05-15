@@ -10,12 +10,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/AVOSCloud/AVOS/AVOSCloud/Object/AVObject.m"
-            timestampString = "575276109.679864"
+            timestampString = "578105672.364318"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1318"
             endingLineNumber = "1318"
-            landmarkName = "-refresh"
+            landmarkName = "+saveAll:error:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "waduoduo/MainVC/&#x4e8c;&#x624b;/SecondHandVC.m"
+            timestampString = "579595635.210614"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "-XML:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

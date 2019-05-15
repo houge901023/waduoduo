@@ -428,6 +428,39 @@ static NSDateFormatter *YYYYMMddDot;
     return YES;
 }
 
+#pragma mark - 使用subString去除float后面无效的0
++ (NSString *)changeFloatWithString:(NSString *)stringFloat
+{
+    const char *floatChars = [stringFloat UTF8String];
+    NSUInteger length = [stringFloat length];
+    NSUInteger zeroLength = 0;
+    NSInteger i = length-1;
+    for(; i>=0; i--)
+    {
+        if(floatChars[i] == '0') {
+            zeroLength++;
+        } else {
+            if(floatChars[i] == '.')
+                i--;
+            break;
+        }
+    }
+    NSString *returnString;
+    if(i == -1) {
+        returnString = @"0";
+    } else {
+        returnString = [stringFloat substringToIndex:i+1];
+    }
+    return returnString;
+}
+
+#pragma mark - 去除float后面无效的0
++ (NSString *)changeFloatWithFloat:(CGFloat)floatValue
+{
+    return [self changeFloatWithString:[NSString stringWithFormat:@"%f",floatValue]];
+}
+
+
 //去掉 表情符号
 - (NSString *)disableEmoji {
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"[^\\u0020-\\u007E\\u00A0-\\u00BE\\u2E80-\\uA4CF\\uF900-\\uFAFF\\uFE30-\\uFE4F\\uFF00-\\uFFEF\\u0080-\\u009F\\u2000-\\u201f\r\n]" options:NSRegularExpressionCaseInsensitive error:nil];

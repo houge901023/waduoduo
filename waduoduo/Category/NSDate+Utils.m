@@ -406,4 +406,20 @@
 + (NSString *)dbFormatString {
     return [NSDate timestampFormatString];
 }
+
++ (NSDate *)dateFromUTCString:(NSString *)utcDateString
+{
+    //"2015-05-08T13:40:55.023Z" to //"2015-05-08T13:40:55"
+    NSString *dateString = [utcDateString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"Z"]];
+    NSRange range = [dateString rangeOfString:@"."];
+    if (range.length > 0) {
+        dateString = [dateString substringToIndex:range.location];
+    }
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
+    NSDate *date = [dateFormatter dateFromString:dateString];
+    return date;
+}
+
 @end

@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface customerCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *nameLB;
+@property (weak, nonatomic) IBOutlet UIButton *phoneBtn;
+
 @end
 
 NS_ASSUME_NONNULL_END

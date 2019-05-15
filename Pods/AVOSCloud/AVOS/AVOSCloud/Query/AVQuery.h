@@ -5,13 +5,12 @@
 #import "AVGeoPoint.h"
 #import "AVObject.h"
 #import "AVCloudQueryResult.h"
-/*!
-  A class that defines a query that is used to query for AVObjects.
- */
-@class AVRequestOperation;
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*!
+ A class that defines a query that is used to query for AVObjects.
+ */
 @interface AVQuery : NSObject
 
 /*!
@@ -33,28 +32,6 @@ typedef NS_ENUM(NSInteger, AVQueryDistanceUnit) {
  @return A AVQuery object.
  */
 + (instancetype)queryWithClassName:(NSString *)className;
-
-/*!
- Creates a AVQuery with the constraints given by predicate.
- 
- The following types of predicates are supported:
- * Simple comparisons such as =, !=, <, >, <=, >=, and BETWEEN with a key and a constant.
- * Containment predicates, such as "x IN {1, 2, 3}".
- * Key-existence predicates, such as "x IN SELF".
- * BEGINSWITH expressions.
- * Compound predicates with AND, OR, and NOT.
- * SubQueries with "key IN %@", subquery.
- 
- The following types of predicates are NOT supported:
- * Aggregate operations, such as ANY, SOME, ALL, or NONE.
- * Regular expressions, such as LIKE, MATCHES, CONTAINS, or ENDSWITH.
- * Predicates comparing one key to another.
- * Complex predicates with many ORed clauses.
- 
- @param className the class name
- @param predicate the predicates
- */
-+ (instancetype)queryWithClassName:(NSString *)className predicate:(NSPredicate *)predicate;
 
 /*!
  *  使用 CQL 查询
@@ -540,6 +517,12 @@ typedef NS_ENUM(NSInteger, AVQueryDistanceUnit) {
 - (nullable NSArray *)findObjects:(NSError **)error;
 
 /*!
+ An alias of `-[AVQuery findObjects:]` methods that supports Swift exception.
+ @seealso `-[AVQuery findObjects:]`
+ */
+- (nullable NSArray *)findObjectsAndThrowsWithError:(NSError **)error;
+
+/*!
  Finds objects asynchronously and calls the given block with the results.
  @param block The block to execute. The block should have the following argument signature:(NSArray *objects, NSError *error) 
  */
@@ -582,6 +565,12 @@ typedef NS_ENUM(NSInteger, AVQueryDistanceUnit) {
 - (nullable AVObject *)getFirstObject:(NSError **)error;
 
 /*!
+ An alias of `-[AVQuery getFirstObject:]` methods that supports Swift exception.
+ @seealso `-[AVQuery getFirstObject:]`
+ */
+- (nullable AVObject *)getFirstObjectAndThrowsWithError:(NSError **)error;
+
+/*!
  Gets an object asynchronously and calls the given block with the result.
  
  This mutates the AVQuery.
@@ -617,6 +606,12 @@ typedef NS_ENUM(NSInteger, AVQueryDistanceUnit) {
  @return the number of AVObjects that match the query, or -1 if there is an error.
  */
 - (NSInteger)countObjects:(NSError **)error;
+
+/*!
+ An alias of `-[AVQuery countObjects:]` methods that supports Swift exception.
+ @seealso `-[AVQuery countObjects:]`
+ */
+- (NSInteger)countObjectsAndThrowsWithError:(NSError **)error;
 
 /*!
  Counts objects asynchronously and calls the given block with the counts.
@@ -655,6 +650,11 @@ typedef NS_ENUM(NSInteger, AVQueryDistanceUnit) {
  The number of objects to skip before returning any.
  */
 @property (nonatomic, assign) NSInteger skip;
+
+/**
+ Include ACL for object.
+ */
+@property (nonatomic, assign) BOOL includeACL;
 
 #pragma mark -
 #pragma mark Cache methods

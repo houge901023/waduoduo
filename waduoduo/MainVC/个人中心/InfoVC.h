@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface InfoVC : BaseVC
 
+@property (nonatomic ,strong) NSString *str;
+
 @end
 
 NS_ASSUME_NONNULL_END

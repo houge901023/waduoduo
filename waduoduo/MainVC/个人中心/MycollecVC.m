@@ -18,7 +18,6 @@ static NSString * CellIdentifier = @"CellIdentifier";
     UICollectionView *mainCollectionView;
 }
 
-@property (nonatomic ,strong) UIButton *imgNil;
 @property (strong, nonatomic) NSMutableArray *products;
 
 @end
@@ -31,6 +30,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
     
     [self setUICollectionView];
     [self getCollection];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -54,7 +54,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     
-    mainCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64) collectionViewLayout:layout];
+    mainCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, JLNavH, SCREEN_WIDTH, SCREEN_HEIGHT-JLNavH) collectionViewLayout:layout];
     mainCollectionView.delegate = self;
     mainCollectionView.dataSource = self;
     mainCollectionView.backgroundColor = [UIColor clearColor];
@@ -63,20 +63,6 @@ static NSString * CellIdentifier = @"CellIdentifier";
     
     //注册
     [mainCollectionView registerClass:[shopsCell class] forCellWithReuseIdentifier:CellIdentifier];
-    
-    _imgNil = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
-    _imgNil.hidden = YES;
-    _imgNil.userInteractionEnabled = NO;
-    _imgNil.center = CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-    [_imgNil setImage:[UIImage imageNamed:@"data_nil"] forState:UIControlStateNormal];
-    [_imgNil setTitle:@"空，快去收藏～" forState:UIControlStateNormal];
-    [_imgNil setTitleColor:titleC3 forState:UIControlStateNormal];
-    _imgNil.titleLabel.font = [UIFont systemFontOfSize:12];
-    [self.view addSubview:_imgNil];
-    
-    CGFloat w = [XYString WidthForString:@"空，快去收藏～" withSizeOfFont:12];
-    [_imgNil setTitleEdgeInsets:UIEdgeInsetsMake(60, 0, 0, 80)];
-    [_imgNil setImageEdgeInsets:UIEdgeInsetsMake(0, w, 40, 0)];
     
 }
 
@@ -123,11 +109,9 @@ static NSString * CellIdentifier = @"CellIdentifier";
     NSMutableArray *arr = [user objectForKey:@"collection"];
     AVQuery *query = [AVQuery queryWithClassName:@"Supply"];
 
-    _imgNil.hidden = YES;
     if (arr) {
         [query whereKey:@"objectId" containedIn:arr];
     }else {
-        _imgNil.hidden = NO;
         return;
     }
     [self.products removeAllObjects];
@@ -135,23 +119,28 @@ static NSString * CellIdentifier = @"CellIdentifier";
     // image 为 File
     [query includeKey:@"image"];
     
-    [SVProgressHUD showWithStatus:nil];
+    [self showLoding:FrameNav setText:@"正在加载中..."];
+    
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         NSLog(@"数组个数＝%ld",objects.count);
+        
         if (!error) {
             if (objects.count) {
-                [SVProgressHUD dismiss];
+                [self hidenLoding];
                 for (AVQuery *query in objects) {
                     [self.products addObject:query];
                 }
-                _imgNil.hidden = YES;
             }else {
-                _imgNil.hidden = NO;
-                [SVProgressHUD showMessage:@"快去收藏配件^_^"];
+                [EasyEmptyView showEmptyInView:self.maskView callback:^(EasyEmptyView *view, UIButton *button, callbackType callbackType) {
+                    
+                }];
             }
             [mainCollectionView reloadData];
         }else {
-            [SVProgressHUD showMessage:@"服务器繁忙，稍后重试"];
+            [EasyEmptyView showErrorInView:self.maskView callback:^(EasyEmptyView *view, UIButton *button, callbackType callbackType) {
+                [EasyEmptyView hiddenEmptyInView:self.maskView];
+                [self getCollection];
+            }];
         }
     }];
 }

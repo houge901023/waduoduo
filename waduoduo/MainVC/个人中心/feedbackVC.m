@@ -39,7 +39,7 @@
 - (void)rightNavAction {
     
     if (textTV.text.length==0) {
-        [SVProgressHUD showMessage:@"内容不能为空"];
+        [EasyTextView showText:@"内容不能为空"];
     }else {
         [self request];
     }
@@ -52,13 +52,13 @@
     [product setObject:[[NSDate date] string] forKey:@"date"];
     [product setObject:[AVUser currentUser].mobilePhoneNumber forKey:@"phone"];
     
-    [SVProgressHUD showWithStatus:@"加载中..."];
+    [EasyLoadingView showLoadingImage:@"正在加载中..."];
     [product saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
-            [SVProgressHUD showSuccessWithStatus:@"提交成功"];
-            [self.navigationController popViewControllerAnimated:YES];
+            [EasyTextView showSuccessText:@"提交成功"];
+//            [self.navigationController popViewControllerAnimated:YES];
         } else {
-            [SVProgressHUD showErrorWithStatus:@"提交失败"];
+            [EasyTextView showErrorText:@"提交失败"];
         }
     }];
     

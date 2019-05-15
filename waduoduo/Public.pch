@@ -26,12 +26,15 @@
 #import "BaseVC.h"
 #import "XYString.h"
 #import "UIView+Toast.h"
-#import "SVProgressHUD.h"
 #import "NSString+WT.h"
 #import "MainNavigationController.h"
 #import <AVOSCloud.h>
 #import "NSDate+Utils.h"
 #import <SDAutoLayout.h>
+#import <AFNetworking.h>
+#import "Network.h"
+#import "NSObject+HG.h"
+#import "EasyShowView.h"
 
 __attribute__((annotate("returns_localized_nsstring")))
 static inline NSString *LocalizationNotNeeded(NSString *s) {
@@ -50,7 +53,7 @@ static inline NSString *LocalizationNotNeeded(NSString *s) {
 
 #define StrFormatTh(r, g ,b) [NSString stringWithFormat:@"%@%@%@",(r),(g),(b)]
 #define StrFormatTW(r, g ) [NSString stringWithFormat:@"%@%@",(r),(g)]
-#define IP @"http://ios.xsdai.net"
+#define IP  @"http://www.jixiek.com/"
 
 /**
  *  弱指针
@@ -118,6 +121,10 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:transparentValue]
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define SCREEN_WIDTH                    ([UIScreen mainScreen].bounds.size.width)
 #define SCREEN_HEIGHT                   ([UIScreen mainScreen].bounds.size.height)
+//frame
+#define FrameAll                   CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+#define FrameNav                   CGRectMake(0, JLNavH, SCREEN_WIDTH, SCREEN_HEIGHT-JLNavH)
+#define FrameNavTab                CGRectMake(0, JLNavH, SCREEN_WIDTH, SCREEN_HEIGHT-JLNavTab)
 
 #define iPhone4 ([UIScreen mainScreen].bounds.size.height == 480)
 #define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
@@ -193,6 +200,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:transparentValue]
 #define CONTENT_VIEW_HEIGHT_NO_TAB_BAR  (SCREEN_HEIGHT - STATUS_BAR_HEIGHT - NAVIGATION_BAR_HEIGHT)
 #define CONTENT_VIEW_HEIGHT_TAB_BAR     (CONTENT_VIEW_HEIGHT_NO_TAB_BAR - TAB_TAB_HEIGHT)
 
+// 存储
+#define StartAD_imageUrl @"StartAD_imageUrl" // 启动页图片
 //是否为空
 #define isNull(a)  ( (a==nil) || ((NSNull*)a==[NSNull null]) )
 #define isNotNull(a)  (!isNull(a))

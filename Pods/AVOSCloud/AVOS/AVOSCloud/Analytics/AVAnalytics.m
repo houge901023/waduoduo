@@ -13,7 +13,7 @@
 #import "AVUtils.h"
 
 #import "AVOSCloud_Internal.h"
-#import <CoreLocation/CoreLocation.h>
+//#import <CoreLocation/CoreLocation.h>
 
 static NSString * endPoint = @"statistics";
 
@@ -44,16 +44,6 @@ static NSString * currentSessionId;
 + (void)trackAppOpenedWithRemoteNotificationPayload:(NSDictionary *)userInfo
 {
     [AVAnalytics event:appOpenWithPush];
-}
-
-+ (void)start
-{
-    [AVAnalytics startWithReportPolicy:AV_BATCH channelId:@""];
-}
-
-+ (void)startWithReportPolicy:(AVReportPolicy)rp channelId:(NSString *)cid
-{
-    AVLoggerError(AVLoggerDomainDefault, @"The method is not supported anymore, please visit application web console to config.");
 }
 
 + (void)startInternallyWithChannel:(NSString *)cid
@@ -211,10 +201,9 @@ static NSString * currentSessionId;
 }
 
 + (void)updateOnlineConfigWithBlock:(AVDictionaryResultBlock)block {
-    NSString *pathComponent = [NSString stringWithFormat:@"statistics/apps/%@/sendPolicy", [AVOSCloud getApplicationId]];
-    NSString *endpoint = [[[AVOSCloud RESTBaseURL] URLByAppendingPathComponent:pathComponent] absoluteString];
+    NSString *path = [NSString stringWithFormat:@"statistics/apps/%@/sendPolicy", [AVOSCloud getApplicationId]];
     
-    [[AVPaasClient sharedInstance] getObject:endpoint withParameters:nil block:^(id object, NSError *error) {
+    [[AVPaasClient sharedInstance] getObject:path withParameters:nil block:^(id object, NSError *error) {
         if (error == nil) {
             // make sure we call the onlineConfigChanged in main thread
             // otherwise timer may not work correctly.
@@ -241,11 +230,6 @@ static NSString * currentSessionId;
     [[AVAnalyticsImpl sharedInstance] setLatitude:latitude longitude:longitude];
 }
 
-+ (void)setLocation:(CLLocation *)location {
-    [[AVAnalyticsImpl sharedInstance] setLatitude:location.coordinate.latitude
-                                        longitude:location.coordinate.longitude];
-}
-
 +(void)startInternally {
     if ([[AVAnalyticsImpl sharedInstance] isLocalEnabled]) {
         [AVAnalytics startInternallyWithChannel:@""];
@@ -256,5 +240,8 @@ static NSString * currentSessionId;
     }];
 }
 
++ (void)start {
+    [self startInternally];
+}
 
 @end

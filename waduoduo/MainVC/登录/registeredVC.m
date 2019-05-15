@@ -145,14 +145,14 @@
     
     [AVOSCloud requestSmsCodeWithPhoneNumber:phoneTF.text callback:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded) {
-            [SVProgressHUD showSuccessWithStatus:@"已发送"];
+            [EasyTextView showSuccessText:@"已发送"];
             [sender startWithTime:60 title:@"获取验证码" countDownTitle:@"s重新获取" mainColor:mainBlue countColor:[UIColor grayColor]];
         }else {
             NSString *msg = [NSString stringWithFormat:@"错误码：%ld",error.code];
             if ([XYString isObjectNull:msg]) {
-                [SVProgressHUD showErrorWithStatus:@"发送失败"];
+                [EasyTextView showErrorText:@"发送失败"];
             }else {
-                [SVProgressHUD showImage:nil status:msg];
+                [EasyTextView showErrorText:msg];
             }
         }
     }];
@@ -163,7 +163,7 @@
     if ([XYString isValidateMobile:phoneTF.text]) {
         [self setYZM:sender];
     }else {
-        [SVProgressHUD showImage:nil status:@"手机号格式错误"];
+        [EasyTextView showText:@"手机号格式错误"];
     }
 }
 
@@ -204,17 +204,17 @@
 - (void)mainAction {
     
     if (phoneTF.text.length==0) {
-        [SVProgressHUD showImage:nil status:@"手机号不能为空"];
+        [EasyTextView showText:@"手机号不能为空"];
     }else if (VerificationTF.text.length==0) {
-        [SVProgressHUD showImage:nil status:@"验证码不能为空"];
+        [EasyTextView showText:@"验证码不能为空"];
     }else if (passTF.text.length==0) {
-        [SVProgressHUD showImage:nil status:@"密码不能为空"];
+        [EasyTextView showText:@"密码不能为空"];
     }else if (nameTF.text.length==0) {
-        [SVProgressHUD showImage:nil status:@"姓名不能为空"];
+        [EasyTextView showText:@"姓名不能为空"];
     }else if (typeTF.text.length==0) {
-        [SVProgressHUD showImage:nil status:@"请选择角色"];
+        [EasyTextView showText:@"请选择角色"];
     }else if (addressTF.text.length==0) {
-        [SVProgressHUD showImage:nil status:@"请选择省／市"];
+        [EasyTextView showText:@"请选择省／市"];
     }else {
         [self request];
     }
@@ -223,7 +223,7 @@
 #pragma mark -- 注册的网络请求
 - (void)request {
     
-    [SVProgressHUD showWithStatus:@"加载中..."];
+    [EasyLoadingView showLoadingImage:@"加载中..."];
     
     [AVUser signUpOrLoginWithMobilePhoneNumberInBackground:phoneTF.text smsCode:VerificationTF.text block:^(AVUser * _Nullable user, NSError * _Nullable error) {
         if (!error) {
@@ -242,22 +242,22 @@
                     self.success(phoneTF.text,passTF.text);
                     [self.navigationController popToRootViewControllerAnimated:YES];
                     [AVUser logOut];
-                    [SVProgressHUD showSuccessWithStatus:@"注册成功"];
+                    [EasyTextView showSuccessText:@"注册成功"];
                 } else {
                     NSString *msg = [NSString stringWithFormat:@"%@",error.userInfo[@"error"]];
                     if ([XYString isObjectNull:msg]) {
-                        [SVProgressHUD showImage:nil status:@"注册失败"];
+                        [EasyTextView showErrorText:@"注册失败"];
                     }else {
-                        [SVProgressHUD showImage:nil status:msg];
+                        [EasyTextView showErrorText:msg];
                     }
                 }
             }];
         }else {
             NSString *msg = [NSString stringWithFormat:@"%@",error.userInfo[@"error"]];
             if ([XYString isObjectNull:msg]) {
-                [SVProgressHUD showImage:nil status:@"注册失败"];
+                [EasyTextView showErrorText:@"注册失败"];
             }else {
-                [SVProgressHUD showImage:nil status:msg];
+                [EasyTextView showErrorText:msg];
             }
         }
     }];

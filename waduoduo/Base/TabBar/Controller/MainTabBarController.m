@@ -9,8 +9,6 @@
 #import "MainTabBarController.h"
 #import "MainTabBar.h"
 #import "MainNavigationController.h"
-//#import "HomeVC.h"
-//#import "SupplyVC.h"
 #import "OlddriversVC.h"
 #import "PersonalVC.h"
 #import "RKNotificationHub.h"
@@ -20,6 +18,8 @@
 #import "AddSupplyVC.h"
 #import "PartsVC.h"
 #import "DemandVC.h"
+#import "SupplyVC.h"
+#import "SecondHandVC.h"
 
 //image ratio 带字默认0.6
 #define TabBarButtonH (iPhoneX ? 83 : 49)
@@ -97,14 +97,15 @@
 - (void)SetupAllControllers{
     
     
-    NSArray *titles = @[@"供应", @"求购", @"", @"消息", @"我的"];
+    NSArray *titles = @[@"供求", @"二手", @"", @"消息", @"我的"];
     NSArray *images = @[@"ntab_1", @"ntab_2", @"",@"ntab_3", @"ntab_4"];
     NSArray *selectedImages = @[@"ntab_1_ed", @"ntab_2_ed", @"", @"ntab_3_ed", @"ntab_4_ed"];
     
-    PartsVC *home = [[PartsVC alloc] init];
+    SupplyVC *home = [[SupplyVC alloc] init];
     home.title = @"挖多多";
-    DemandVC *lend = [[DemandVC alloc] init];
-    lend.title = @"求购";
+    home.Personal = NO;
+    SecondHandVC *lend = [[SecondHandVC alloc] init];
+    lend.title = @"优质二手设备";
     OlddriversVC *found = [[OlddriversVC alloc] init];
     PersonalVC *my = [[PersonalVC alloc] init];
     
@@ -131,7 +132,7 @@
 - (void)setup {
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/5*2, 0, SCREEN_WIDTH/5, 49)];
-    [button setImage:[UIImage imageNamed:@"keyboard_add"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"ntab_add"] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(addcontent) forControlEvents:UIControlEventTouchUpInside];
     [self.tabBar addSubview:button];
 }
@@ -147,12 +148,15 @@
 #pragma mark -- 分享代理
 - (void)animationHasFinishedWithButton:(ZFWeiboButton *)button {
     if ([AVUser currentUser]==nil) {
-        [SVProgressHUD showMessage:@"不能发布，请先登录"];
+        [EasyTextView showInfoText:@"不能发布，请先登录"];
         return;
     }
     if (APP_DELE.newV==NO) {
-        [SVProgressHUD showErrorWithStatus:@"请更新版本"];
+        [EasyTextView showInfoText:@"请更新版本"];
         return;
+    }
+    if (APP_DELE.noPower==YES) {
+        return [EasyTextView showInfoText:@"你暂时无权限访问"];
     }
     if (button.tag==1000) {
         AdddemandVC *MVC = [[AdddemandVC alloc] init];

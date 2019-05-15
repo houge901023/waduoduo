@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SecondCell2 : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *titleLB;
+@property (weak, nonatomic) IBOutlet UILabel *contentLB;
+
 @end
 
 NS_ASSUME_NONNULL_END

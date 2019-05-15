@@ -1,13 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13142" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12042"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SecondDetaileVC">
             <connections>
+                <outlet property="Top" destination="0bG-tg-Kdb" id="bcM-E9-lI5"/>
+                <outlet property="headImageV" destination="093-fP-xYP" id="Pcz-UJ-4Mz"/>
+                <outlet property="mainTV" destination="7xa-m2-dGx" id="2rV-A4-2Q6"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -15,8 +21,29 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="093-fP-xYP">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="211"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="093-fP-xYP" secondAttribute="height" multiplier="16:9" id="zfv-Cw-zfB"/>
+                    </constraints>
+                </imageView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7xa-m2-dGx">
+                    <rect key="frame" x="0.0" y="211" width="375" height="456"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <constraints>
+                <constraint firstItem="093-fP-xYP" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="0bG-tg-Kdb"/>
+                <constraint firstAttribute="trailing" secondItem="093-fP-xYP" secondAttribute="trailing" id="Adl-kn-R7G"/>
+                <constraint firstItem="093-fP-xYP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Bay-Ky-n43"/>
+                <constraint firstAttribute="bottom" secondItem="7xa-m2-dGx" secondAttribute="bottom" id="BeY-bX-EYa"/>
+                <constraint firstItem="7xa-m2-dGx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="GOX-4p-gzA"/>
+                <constraint firstItem="7xa-m2-dGx" firstAttribute="top" secondItem="093-fP-xYP" secondAttribute="bottom" id="cKq-2i-XjL"/>
+                <constraint firstAttribute="trailing" secondItem="7xa-m2-dGx" secondAttribute="trailing" id="jLx-Bo-1Po"/>
+            </constraints>
+            <point key="canvasLocation" x="53.600000000000001" y="48.125937031484263"/>
         </view>
     </objects>
 </document>

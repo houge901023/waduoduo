@@ -10,6 +10,12 @@
 #import "MainTabBarController.h"
 #import <AVOSCloud.h>
 #import <RongIMKit/RongIMKit.h>
+#import "WZXLaunchViewController.h"
+
+#import "EasyTextGlobalConfig.h"
+#import "EasyLoadingGlobalConfig.h"
+#import "EasyEmptyGlobalConfig.h"
+#import "EasyAlertGlobalConfig.h"
 
 #define APP_ID @"7Rm1IitHkHO0a2bUKAKfQIH0-gzGzoHsz"
 #define APP_KEY @"r6mw4nLd65uUGGCuN9Lv2kRs"
@@ -32,10 +38,7 @@
         [self initRCIMtoken:IMtoken];
     }
     
-    MainTabBarController *root = [[MainTabBarController alloc] init];
-    self.window.rootViewController = root;
-    [self.window makeKeyAndVisible];
-    [self.window setBackgroundColor:[UIColor whiteColor]];
+    [self layoutRootVC];
     
     APP_DELE.newV = YES;
     
@@ -75,9 +78,62 @@
     manager.toolbarDoneBarButtonItemText = @"完成";
 //    manager.toolbarTintColor = GrayColor;
     
+    // 初始化数据加载框
+    [self initLoding];
     return YES;
 }
 
+#pragma mark - 初始化 AFHTTPSessionManager AFURLSessionManager 避免AF内存的泄露 NSURLSession
+static AFHTTPSessionManager *manager ;
+static AFURLSessionManager *urlsession ;
+
+-(AFHTTPSessionManager *)sharedHTTPSession{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        manager = [AFHTTPSessionManager manager];
+        manager.requestSerializer.timeoutInterval = 10;
+    });
+    return manager;
+}
+
+-(AFURLSessionManager *)sharedURLSession{
+    static dispatch_once_t onceToken2;
+    dispatch_once(&onceToken2, ^{
+        urlsession = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    });
+    return urlsession;
+}
+
+- (void)initLoding {
+    
+    /**显示文字**/
+    EasyTextGlobalConfig *config = [EasyTextGlobalConfig shared];
+    config.bgColor = [UIColor blackColor];
+    config.titleColor = [UIColor whiteColor];
+    config.animationType = LoadingAnimationTypeFade;
+    
+    
+    /**显示加载框**/
+    EasyLoadingGlobalConfig *LoadingConfig = [EasyLoadingGlobalConfig shared];
+    LoadingConfig.LoadingType = LoadingAnimationTypeBounce;
+    LoadingConfig.tintColor = titleC2;
+    NSMutableArray *tempArr = [NSMutableArray arrayWithCapacity:8];
+    for (int i = 0; i < 9; i++) {
+        UIImage *img = [UIImage imageNamed:[NSString stringWithFormat:@"icon_hud_%d",i+1]];
+        [tempArr addObject:img] ;
+    }
+    LoadingConfig.playImagesArray = tempArr ;
+    
+    
+    /**显示空白页面**/
+    EasyEmptyGlobalConfig  *emptyConfig = [EasyEmptyGlobalConfig shared];
+    emptyConfig.bgColor = [UIColor whiteColor];
+    
+    
+    /**显示alert**/
+    EasyAlertGlobalConfig *alertConfig = [EasyAlertGlobalConfig shared];
+    alertConfig.titleColor = [UIColor blackColor];
+}
 #pragma mark -- 登录融云服务器
 - (void)initRCIMtoken:(NSString *)token {
     
@@ -92,10 +148,10 @@
         NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
         
     } error:^(RCConnectErrorCode status) {
-        [SVProgressHUD showMessage:@"初始化消息失败，重新启动"];
+        [EasyTextView showErrorText:@"初始化消息失败，重新启动"];
     } tokenIncorrect:^{
         [AVUser logOut];
-        [SVProgressHUD showMessage:@"用户过期，需重新登录"];
+        [EasyTextView showInfoText:@"用户过期，需重新登录"];
     }];
 }
 
@@ -173,5 +229,45 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (void)layoutRootVC {
+    
+    NSString *imageURL = [[NSUserDefaults standardUserDefaults] objectForKey:StartAD_imageUrl];
+    
+    [WZXLaunchViewController showWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height) ImageURL:imageURL timeSecond:5 hideSkip:NO imageLoadGood:^(UIImage *image, NSString *imageURL) {
+        /// 广告加载结束
+        NSLog(@"%@ %@",image,imageURL);
+        
+    } clickImage:^(UIViewController *advertisingVC) {
+        /// 点击广告
+        
+        //            //2.在webview中打开
+        //            HomeWebViewController *VC = [[HomeWebViewController alloc] init];
+        //            VC.urlStr = @"http://www.jianshu.com/p/7205047eadf7";
+        //            VC.title = @"广告";
+        //            VC.AppDelegateSele= -1;
+        //
+        //            VC.WebBack= ^(){
+        //                //广告展示完成回调,设置window根控制器
+        //
+        //                ViewController *vc = [[ViewController alloc]init];
+        //                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        //
+        //                self.window.rootViewController = nav;
+        //            };
+        //
+        //
+        //            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:VC];
+        //            [advertisingVC presentViewController:nav animated:YES completion:nil];
+        
+    } theAdEnds:^{
+        //广告展示完成回调,设置window根控制器
+        MainTabBarController *root = [[MainTabBarController alloc] init];
+        self.window.rootViewController = root;
+        [self.window makeKeyAndVisible];
+        [self.window setBackgroundColor:[UIColor whiteColor]];
+    }];
+}
 
+     
+     
 @end

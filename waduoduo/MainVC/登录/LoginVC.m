@@ -104,9 +104,9 @@
 
 - (void)mainAction {
     if (phoneTF.text.length==0) {
-        [SVProgressHUD showMessage:@"手机号不能为空"];
+        [EasyTextView showText:@"手机号不能为空"];
     }else if (passTF.text.length==0) {
-        [SVProgressHUD showImage:nil status:@"请输入密码"];
+        [EasyTextView showText:@"请输入密码"];
     }else {
         [self request];
     }
@@ -115,15 +115,17 @@
 #pragma mark -- 登录的网络请求
 - (void)request {
     
-    [SVProgressHUD showWithStatus:@"加载中..."];
- 
+    [EasyLoadingView showLoadingImage:@"正在加载中..."];
+    
     [AVUser logInWithMobilePhoneNumberInBackground:phoneTF.text password:passTF.text block:^(AVUser * _Nullable user, NSError * _Nullable error) {
         if (error) {
             NSString *msg = [NSString stringWithFormat:@"%@",error.userInfo[@"error"]];
             if ([XYString isObjectNull:msg]) {
-                [SVProgressHUD showImage:nil status:@"登录失败"];
+                [EasyTextView showInfoText:@"登录失败，请重试"];
+                phoneTF.text = @"";
+                passTF.text = @"";
             }else {
-                [SVProgressHUD showImage:nil status:msg];
+                [EasyTextView showInfoText:msg];
             }
         } else {
             //获取聊天token
@@ -163,8 +165,7 @@
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         
         NSLog(@"成功返回=%@",dic);
-        
-        [SVProgressHUD showSuccessWithStatus:@"登录成功"];
+        [EasyTextView showSuccessText:@"登录成功"];
         [self dismissViewControllerAnimated:YES completion:nil];
         [self setUserifon:avoidNull(dic[@"token"]) andKey:@"IMtoken"];
         [self initRCIMtoken:avoidNull(dic[@"token"])];
@@ -172,7 +173,7 @@
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [AVUser logOut];
-        [SVProgressHUD showMessage:@"服务器繁忙，稍后重试"];
+        [EasyTextView showErrorText:@"服务器繁忙，稍后重试"];
     }];
     
 }
@@ -190,7 +191,7 @@
         NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
         
     } error:^(RCConnectErrorCode status) {
-        [SVProgressHUD showMessage:@"初始化消息失败，重新启动"];
+
     } tokenIncorrect:^{
         //token过期或者不正确。
         //如果设置了token有效期并且token过期，请重新请求您的服务器获取新的token

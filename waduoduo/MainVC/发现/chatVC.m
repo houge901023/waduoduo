@@ -54,7 +54,8 @@
 - (void)othersInfo:(NSString *)uid {
     
     AVQuery *query = [AVQuery queryWithClassName:@"_User"];
-    [SVProgressHUD showWithStatus:@"读取中..."];
+    
+    [EasyLoadingView showLoadingImage];
     [query getObjectInBackgroundWithId:uid block:^(AVObject * _Nullable object, NSError * _Nullable error) {
         if (!error) {
             NSLog(@"kankan=%@",object);
@@ -71,9 +72,9 @@
             MVC.name = avoidNull(object[@"username"]);
             MVC.imgurl = avoidNull(object[@"iconHead"]);
             [self.navigationController pushViewController:MVC animated:YES];
-            [SVProgressHUD dismiss];
+            [EasyLoadingView hidenLoading];
         }else {
-            [SVProgressHUD showMessage:@"读取失败，稍后重试"];
+            [EasyTextView showErrorText:@"读取失败，稍后重试"];
         }
     }];
 }

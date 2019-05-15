@@ -106,7 +106,7 @@
         long rowIndex = idx / perRowItemCount;
         UIImageView *imageView = [_imageViewsArray objectAtIndex:idx];
         imageView.hidden = NO;
-        [imageView sd_setImageWithURL:[NSURL URLWithString:[obj imgUrlUpdate]] placeholderImage:[UIImage imageNamed:@"img_ default"]];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:[obj imgUrlUpdate]] placeholderImage:[UIImage imageNamed:@"wdd_placeholder"]];
         imageView.frame = CGRectMake(columnIndex * (itemW + margin), rowIndex * (itemH + margin), itemW, itemH);
     }];
     
