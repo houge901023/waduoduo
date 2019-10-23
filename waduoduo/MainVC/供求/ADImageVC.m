@@ -10,13 +10,46 @@
 
 @interface ADImageVC ()
 
+@property (nonatomic ,strong) UIScrollView *mainSV;
+@property (nonatomic ,strong) UIImageView *mainImageView;
+
 @end
 
 @implementation ADImageVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    self.title = @"活动详情";
+    
+    [self.mainImageView sd_setImageWithURL:[NSURL URLWithString:self.imageUrl] placeholderImage:[UIImage imageNamed:@"default_img"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+        if (error) {
+            
+        }else {
+            // 获取图片实际尺寸
+            CGSize bigSize = image.size;
+            self.mainImageView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_WIDTH/bigSize.width*bigSize.height);
+            self.mainSV.contentSize = CGSizeMake(SCREEN_WIDTH, self.mainImageView.height);
+            
+        }
+    }];
+}
+
+- (UIScrollView *)mainSV {
+    if (_mainSV == nil) {
+        _mainSV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, JLNavH, SCREEN_WIDTH, SCREEN_HEIGHT-JLNavH)];
+        [self.view addSubview:_mainSV];
+    }
+    return _mainSV;
+}
+
+- (UIImageView *)mainImageView {
+    if (_mainImageView == nil) {
+        _mainImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-JLNavH)];
+        [self.mainSV addSubview:_mainImageView];
+    }
+    return _mainImageView;
 }
 
 /*

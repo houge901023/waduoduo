@@ -210,6 +210,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
     
     //注册
     [mainCollectionView registerClass:[shopsCell class] forCellWithReuseIdentifier:CellIdentifier];
+    [mainCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"MyCollectionViewHeaderView"];
     
     mainCollectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadLastData)];
 }
@@ -322,6 +323,60 @@ static NSString * CellIdentifier = @"CellIdentifier";
     MVC.Personal = self.Personal;
     [self.navigationController pushViewController:MVC animated:YES];
 }
+
+/**
+ 创建区头视图和区尾视图
+ */
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
+    if (kind == UICollectionElementKindSectionHeader){
+        UICollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"MyCollectionViewHeaderView" forIndexPath:indexPath];
+        headerView.backgroundColor = [UIColor yellowColor];
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:headerView.bounds];
+        [headerView addSubview:imageView];
+        
+        if (self.products.count>0) {
+            AVObject *product = self.products[0];
+            AVUser *user = product[@"owner"];
+            if ([user[@"companyImage"] isKindOfClass:[NSString class]]) {
+                [imageView sd_setImageWithURL:[NSURL URLWithString:avoidNull(user[@"companyImage"])] placeholderImage:[UIImage imageNamed:@"default_img"]];
+            }
+        }
+        
+        return headerView;
+    }
+    return nil;
+}
+
+/**
+ 区头大小
+ */
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
+    
+    if (self.userId.length>0) {
+        
+        if (self.products.count>0) {
+            AVObject *product = self.products[0];
+            AVUser *user = product[@"owner"];
+            if ([user[@"companyImage"] isKindOfClass:[NSString class]]) {
+                NSString *imgUrl = user[@"companyImage"];
+                if (imgUrl.length>0) {
+                    return CGSizeMake(kScreenWidth, kScreenWidth/375*180);
+                }else {
+                    return CGSizeMake(kScreenWidth, 0);
+                }
+            }else {
+                return CGSizeMake(kScreenWidth, 0);
+            }
+        }else {
+            return CGSizeMake(kScreenWidth, 0);
+        }
+        
+    }else {
+        return CGSizeMake(kScreenWidth, 0);
+    }
+}
+
 #pragma mark -- 按钮的点击事件
 - (void)stauseAction:(UIButton *)sender {
     
@@ -416,7 +471,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
             }else {
                 if (self.products.count) {
                     [self hidenLoding];
-                    [EasyTextView showText:@"无更多配件信息"];
+                    [EasyTextView showText:@"无更多产品信息"];
                 }else {
                     [EasyEmptyView showEmptyInView:self.maskView callback:^(EasyEmptyView *view, UIButton *button, callbackType callbackType) {
                         

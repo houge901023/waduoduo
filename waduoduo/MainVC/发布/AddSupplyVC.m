@@ -146,7 +146,7 @@
     _noteTextView.backgroundColor = [UIColor blueColor];
     
     _noteTextView = [[WTTextView alloc]init];
-    _noteTextView.placeHolder = @"请输入配件详细信息";
+    _noteTextView.placeHolder = @"请输入配件详细信息（不可带有联系方式）";
     _noteTextView.placeHolderTextColor = colorValue(0xcccccc, 1);
     _noteTextView.disabelEmoji = YES;
     _noteTextView.textColor = colorValue(0x666666, 1);

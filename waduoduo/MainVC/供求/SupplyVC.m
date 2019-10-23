@@ -9,6 +9,7 @@
 #import "SupplyVC.h"
 #import "PartsVC.h"
 #import "DemandVC.h"
+#import "MainVC.h"
 
 @interface SupplyVC ()
 
@@ -24,6 +25,12 @@
     
     self.navBarView.hidden = NO;
     [self setup];
+//    
+//    MainVC *main = [[MainVC alloc] init];
+//    MainNavigationController *NAV = [[MainNavigationController alloc] initWithRootViewController:main];
+//    [self presentViewController:NAV animated:NO completion:^{
+//        main.NavLeft.hidden = YES;
+//    }];
 }
 
 - (void)setup {

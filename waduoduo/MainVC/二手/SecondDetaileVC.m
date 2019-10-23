@@ -101,12 +101,12 @@ static NSString * const CellID = @"CellID";
         [EasyLoadingView hidenLoading];
         if (succeeded) {
             payInfoVC *MVC = [[payInfoVC alloc] init];
-            MVC.isSuccess = YES;
+            MVC.isSuccess = 1;
             MVC.tel = self.model.Mobile;
             [self.navigationController pushViewController:MVC animated:YES];
         }else {
             payInfoVC *MVC = [[payInfoVC alloc] init];
-            MVC.isSuccess = NO;
+            MVC.isSuccess = 2;
             MVC.tel = self.model.Mobile;
             [self.navigationController pushViewController:MVC animated:YES];
         }

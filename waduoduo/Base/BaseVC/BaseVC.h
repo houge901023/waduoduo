@@ -17,14 +17,18 @@
 
 //自定义返回按钮
 - (void)configureLeft:(NSString *)string;
+//自定义返回按钮
+- (void)configureLeftImage:(NSString *)imgName;
 //自定义导航栏右边按钮--文字
 - (void)configureRight:(NSString *)string;
 //自定义导航栏右边按钮--图片
 - (void)configureRightImage:(NSString *)imgName;
+- (void)configureRightImage1:(NSString *)imgName setImage2:(NSString *)imgName2;
 //导航栏右边点击事件
 - (void)rightNavAction;
 //返回的点击事件
 - (void)backNavAction;
+- (void)btnAction:(UIButton *)btn;
 
 //设置边框
 -(void)setBorder:(UIView *)view size:(float)size;

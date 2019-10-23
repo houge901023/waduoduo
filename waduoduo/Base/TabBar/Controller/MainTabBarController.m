@@ -20,6 +20,7 @@
 #import "DemandVC.h"
 #import "SupplyVC.h"
 #import "SecondHandVC.h"
+#import "AddProductVC.h"
 
 //image ratio 带字默认0.6
 #define TabBarButtonH (iPhoneX ? 83 : 49)
@@ -163,7 +164,7 @@
         MainNavigationController *NAV = [[MainNavigationController alloc] initWithRootViewController:MVC];
         [self presentViewController:NAV animated:YES completion:nil];
     }else if (button.tag==1001) {
-        AddSupplyVC *MVC = [[AddSupplyVC alloc] init];
+        AddProductVC *MVC = [[AddProductVC alloc] init];
         MainNavigationController *NAV = [[MainNavigationController alloc] initWithRootViewController:MVC];
         [self presentViewController:NAV animated:YES completion:nil];
     }

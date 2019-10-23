@@ -6,11 +6,13 @@
 //  Copyright © 2019 侯彦名. All rights reserved.
 //
 
-#import "BaseVC.h"
+#import "BaseVController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface infomoreVC : BaseVC
+@interface infomoreVC : BaseVController
+
+@property (nonatomic ,copy) NSString *price;
 
 @end
 

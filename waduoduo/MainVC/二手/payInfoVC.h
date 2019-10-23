@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *titleLB;
 @property (weak, nonatomic) IBOutlet UIButton *phoneBtn;
 
-@property (nonatomic ,assign) BOOL isSuccess;
+@property (nonatomic ,assign) NSInteger isSuccess;
 @property (nonatomic ,strong) NSString *tel;
 
 @end

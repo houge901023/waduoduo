@@ -17,7 +17,23 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.6.8</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>1</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>alipayshare</string>
+		<string>alipay</string>
+		<string>mqqapi</string>
+		<string>wechat</string>
+		<string>mqqOpensdkSSoLogin</string>
+		<string>mqq</string>
+		<string>mqzoneopensdkapiV2</string>
+		<string>mqzoneopensdkapi19</string>
+		<string>mqzoneopensdkapi</string>
+		<string>mqzoneopensdk</string>
+		<string>mqzone</string>
+		<string>weixin</string>
+		<string>mqqopensdkapiV2</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

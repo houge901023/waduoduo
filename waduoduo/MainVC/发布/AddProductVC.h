@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AddProductVC : BaseVC
 
+@property (nonatomic ,strong) UIView *backView;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -148,6 +148,15 @@
  */
 - (NSString *)imgUrlUpdate;
 
+
+/**
+ 判断手机号合法
+
+ @param mobile 手机号
+ @return YES 合法 NO 不合法
+ */
++ (BOOL)PhoneNumberMobile:(NSString *)mobile;
+
 #pragma mark -- 获取字符串
 /** 去除float后面无效的0 */
 + (NSString *)changeFloatWithFloat:(CGFloat)floatValue;

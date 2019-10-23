@@ -10,6 +10,7 @@
 #import "customerCell.h"
 #import "secondModel.h"
 #import "SecondDetaileVC.h"
+#import "PartsDetailsVC.h"
 
 static NSString * const CellID = @"CellID";
 
@@ -72,11 +73,19 @@ static NSString * const CellID = @"CellID";
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"customerCell" owner:nil options:nil] firstObject];
     }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
     NSString *info = self.dataArr[indexPath.row];
     secondModel *model = [secondModel mj_objectWithKeyValues:info];
     cell.nameLB.text = model.Linkman;
     [cell.phoneBtn setTitle:model.Mobile forState:UIControlStateNormal];
+    
+    if (model.LastDate.length > 0) {
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }else {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
     
     return cell;
 }
@@ -86,10 +95,12 @@ static NSString * const CellID = @"CellID";
     
     NSString *info = self.dataArr[indexPath.row];
     secondModel *model = [secondModel mj_objectWithKeyValues:info];
-    SecondDetaileVC *MVC = [[SecondDetaileVC alloc] init];
-    MVC.model = model;
-    MVC.isHiden = YES;
-    [self.navigationController pushViewController:MVC animated:YES];
+    if (model.LastDate.length > 0) {
+        SecondDetaileVC *MVC = [[SecondDetaileVC alloc] init];
+        MVC.model = model;
+        MVC.isHiden = YES;
+        [self.navigationController pushViewController:MVC animated:YES];
+    }
 }
 /*
 #pragma mark - Navigation

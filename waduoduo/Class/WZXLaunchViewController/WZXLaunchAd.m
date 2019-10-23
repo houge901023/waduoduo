@@ -56,9 +56,9 @@ NSString *const TimerSender = @"5";
         _adImageView = [[UIImageView alloc]initWithFrame:self.adImageFrame];
         _adImageView.userInteractionEnabled = YES;
 //        _adImageView.alpha = 0.2;
-//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
-//        [_adImageView addGestureRecognizer:tap];
-//        _adImageView.backgroundColor = [UIColor clearColor];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
+        [_adImageView addGestureRecognizer:tap];
+        _adImageView.backgroundColor = [UIColor clearColor];
     }
     return _adImageView;
     

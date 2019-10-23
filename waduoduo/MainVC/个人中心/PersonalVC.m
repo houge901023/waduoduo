@@ -16,6 +16,7 @@
 #import "versonVC.h"
 #import "ViewControllerPDF.h"
 #import "customerListVC.h"
+#import "MainVC.h"
 
 @interface PersonalVC () <UITableViewDelegate,UITableViewDataSource>
 {
@@ -58,7 +59,8 @@
 
 - (NSArray *)titleArr {
     if (_titleArr==nil) {
-        _titleArr = [[NSMutableArray alloc] initWithObjects:@[@"我的供求",@"我的收藏",@"我的客户"],@[@"意见反馈",@"隐私政策",@"关于我们"], nil];
+        
+        _titleArr = [[NSMutableArray alloc] initWithObjects:@[@"我的供求",@"我的收藏",@"我的客户"],@[@"意见反馈",@"隐私政策",@"关于我们"],@[@"体彩攻略"], nil];
     }
     return _titleArr;
 }
@@ -116,41 +118,56 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section==0&&indexPath.row==0) {
-        if ([AVUser currentUser]==nil) {
-            [EasyTextView showInfoText:@"请先登录"];
-            return;
-        }
-        SupplyVC *MVC = [[SupplyVC alloc] init];
-        MVC.userId = [AVUser currentUser].objectId;
-        MVC.Personal = YES;
-        [self.navigationController pushViewController:MVC animated:YES];
+        [LoginVC LoginSuccess:^{
+            SupplyVC *MVC = [[SupplyVC alloc] init];
+            MVC.userId = [AVUser currentUser].objectId;
+            MVC.Personal = YES;
+            [self.navigationController pushViewController:MVC animated:YES];
+        }];
+        
     }else if (indexPath.section==0&&indexPath.row==1) {
-        if ([AVUser currentUser]==nil) {
-            [EasyTextView showInfoText:@"请先登录"];
-            return;
-        }
-        MycollecVC *MVC = [[MycollecVC alloc] init];
-        [self.navigationController pushViewController:MVC animated:YES];
+
+        [LoginVC LoginSuccess:^{
+            MycollecVC *MVC = [[MycollecVC alloc] init];
+            [self.navigationController pushViewController:MVC animated:YES];
+        }];
+        
     }else if (indexPath.section==0&&indexPath.row==2) {
-        if ([AVUser currentUser]==nil) {
-            [EasyTextView showInfoText:@"请先登录"];
-            return;
-        }
-        customerListVC *MVC = [[customerListVC alloc] init];
-        [self.navigationController pushViewController:MVC animated:YES];
+        [LoginVC LoginSuccess:^{
+            customerListVC *MVC = [[customerListVC alloc] init];
+            [self.navigationController pushViewController:MVC animated:YES];
+        }];
     }else if (indexPath.section==1&&indexPath.row==0) {
-        if ([AVUser currentUser]==nil) {
-            [EasyTextView showInfoText:@"请先登录"];
-            return;
-        }
-        feedbackVC *MVC = [[feedbackVC alloc] init];
-        [self.navigationController pushViewController:MVC animated:YES];
+        [LoginVC LoginSuccess:^{
+            feedbackVC *MVC = [[feedbackVC alloc] init];
+            [self.navigationController pushViewController:MVC animated:YES];
+        }];
     }else if (indexPath.section==1&&indexPath.row==1) {
         PrivacyVC *MVC = [[PrivacyVC alloc] init];
         [self.navigationController pushViewController:MVC animated:YES];
     }else if (indexPath.section==1&&indexPath.row==2) {
         versonVC *MVC = [[versonVC alloc] init];
         [self.navigationController pushViewController:MVC animated:YES];
+    }else if (indexPath.section==2) {
+        //你的客服号码。
+        NSString  *qqNumber=@"2280246875";
+        if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"mqq://"]]) {
+            UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+            NSURL * url=[NSURL URLWithString:[NSString stringWithFormat:@"mqq://im/chat?chat_type=wpa&uin=%@&version=1&src_type=web",qqNumber]];
+            
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            webView.delegate = self;
+            [webView loadRequest:request];
+            [self.view addSubview:webView];
+        }else{
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"" message:@"对不起，您还没安装QQ" preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                return ;
+            }];
+            [alertController addAction:cancelAction];
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -160,7 +177,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ID];
     }
     
-    cell.imageView.image = [UIImage imageNamed:@[@[@"supply_1",@"collection",@"shebei"],@[@"opinion",@"my_ys",@"version"]][indexPath.section][indexPath.row]];
+    cell.imageView.image = [UIImage imageNamed:@[@[@"supply_1",@"collection",@"shebei"],@[@"opinion",@"my_ys",@"version"],@[@"sm_gzed"]][indexPath.section][indexPath.row]];
     
     cell.textLabel.font = [UIFont systemFontOfSize:14];
     cell.textLabel.textColor = titleC1;

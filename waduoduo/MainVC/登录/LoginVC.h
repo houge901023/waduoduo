@@ -8,6 +8,13 @@
 
 #import "BaseVC.h"
 
+typedef void (^LoginUserIfo)();
+
 @interface LoginVC : BaseVC
+
+@property (nonatomic ,copy) LoginUserIfo info;
+
++ (void)LoginSuccess:(LoginUserIfo)info;
+
 
 @end

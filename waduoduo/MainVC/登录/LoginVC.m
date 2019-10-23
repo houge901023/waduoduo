@@ -166,7 +166,11 @@
         
         NSLog(@"成功返回=%@",dic);
         [EasyTextView showSuccessText:@"登录成功"];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (self.info) {
+                self.info();
+            }
+        }];
         [self setUserifon:avoidNull(dic[@"token"]) andKey:@"IMtoken"];
         [self initRCIMtoken:avoidNull(dic[@"token"])];
         APP_DELE.refreshNum = 2;
@@ -228,6 +232,18 @@
 
 - (void)rightNavAction {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
++ (void)LoginSuccess:(LoginUserIfo)info {
+    
+    if ([AVUser currentUser]==nil) { // 未登录
+        LoginVC *MVC = [[LoginVC alloc] init];
+        MVC.info = info;
+        MainNavigationController *NAV = [[MainNavigationController alloc] initWithRootViewController:MVC];
+        [APP_DELE.window.rootViewController presentViewController:NAV animated:YES completion:nil];
+    }else {
+        info();
+    }
 }
 
 - (void)didReceiveMemoryWarning {

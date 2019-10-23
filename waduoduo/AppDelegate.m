@@ -16,6 +16,8 @@
 #import "EasyLoadingGlobalConfig.h"
 #import "EasyEmptyGlobalConfig.h"
 #import "EasyAlertGlobalConfig.h"
+#import "PartsVC.h"
+#import "ADImageVC.h"
 
 #define APP_ID @"7Rm1IitHkHO0a2bUKAKfQIH0-gzGzoHsz"
 #define APP_KEY @"r6mw4nLd65uUGGCuN9Lv2kRs"
@@ -232,33 +234,42 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 - (void)layoutRootVC {
     
     NSString *imageURL = [[NSUserDefaults standardUserDefaults] objectForKey:StartAD_imageUrl];
+    NSArray  *array = [imageURL componentsSeparatedByString:@","];
     
-    [WZXLaunchViewController showWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height) ImageURL:imageURL timeSecond:5 hideSkip:NO imageLoadGood:^(UIImage *image, NSString *imageURL) {
+    NSString *img = @"";
+    if (array.count>0) {
+        img = array[0];
+    }
+    
+    [WZXLaunchViewController showWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height) ImageURL:img timeSecond:5 hideSkip:NO imageLoadGood:^(UIImage *image, NSString *imageURL) {
         /// 广告加载结束
         NSLog(@"%@ %@",image,imageURL);
         
     } clickImage:^(UIViewController *advertisingVC) {
+        
+        MainTabBarController *root = [[MainTabBarController alloc] init];
+        self.window.rootViewController = root;
+        [self.window makeKeyAndVisible];
+        [self.window setBackgroundColor:[UIColor whiteColor]];
+        
         /// 点击广告
-        
-        //            //2.在webview中打开
-        //            HomeWebViewController *VC = [[HomeWebViewController alloc] init];
-        //            VC.urlStr = @"http://www.jianshu.com/p/7205047eadf7";
-        //            VC.title = @"广告";
-        //            VC.AppDelegateSele= -1;
-        //
-        //            VC.WebBack= ^(){
-        //                //广告展示完成回调,设置window根控制器
-        //
-        //                ViewController *vc = [[ViewController alloc]init];
-        //                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        //
-        //                self.window.rootViewController = nav;
-        //            };
-        //
-        //
-        //            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:VC];
-        //            [advertisingVC presentViewController:nav animated:YES completion:nil];
-        
+        if (array.count==3) {
+
+            PartsVC *MVC = [[PartsVC alloc] init];
+            MVC.userId = avoidNull(array[1]);
+            MVC.title = [NSString stringWithFormat:@"%@的配件",avoidNull(array[2])];
+            MainNavigationController *NAV = (MainNavigationController *)root.selectedViewController;
+            [NAV pushViewController:MVC animated:YES];
+            
+        }else if(array.count==2){
+            
+            ADImageVC *MVC = [[ADImageVC alloc] init];
+            MVC.imageUrl = avoidNull(array[1]);
+            MainNavigationController *NAV = (MainNavigationController *)root.selectedViewController;
+            [NAV pushViewController:MVC animated:YES];
+            
+        }
+
     } theAdEnds:^{
         //广告展示完成回调,设置window根控制器
         MainTabBarController *root = [[MainTabBarController alloc] init];

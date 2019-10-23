@@ -102,6 +102,19 @@
     UIBarButtonItem *leftbar=[[UIBarButtonItem alloc] initWithCustomView:sender];
     self.navigationItem.leftBarButtonItem = leftbar;
 }
+//自定义返回按钮
+- (void)configureLeftImage:(NSString *)imgName {
+    
+    UIButton *sender = [UIButton new];
+    [sender setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
+
+    
+    [sender sizeToFit];
+    [sender addTarget:self action:@selector(backNavAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *leftbar=[[UIBarButtonItem alloc] initWithCustomView:sender];
+    self.navigationItem.leftBarButtonItem = leftbar;
+}
 //自定义导航栏右边按钮--图片
 - (void)configureRightImage:(NSString *)imgName {
     
@@ -113,12 +126,39 @@
     UIBarButtonItem *rightbar=[[UIBarButtonItem alloc] initWithCustomView:NavRightBT];
     self.navigationItem.rightBarButtonItem = rightbar;
 }
+
+- (void)configureRightImage1:(NSString *)imgName setImage2:(NSString *)imgName2 {
+    
+    UIView *batView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 90, 40)];
+    batView.backgroundColor = [UIColor clearColor];
+    
+    for (int i=0; i<2; i++) {
+        
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*50, 0, 40, 40)];
+        [btn setImage:[UIImage imageNamed:@[imgName,imgName2][i]] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
+        btn.tag = 7000+i;
+        [batView addSubview:btn];
+    }
+    
+    UIBarButtonItem *rightbar=[[UIBarButtonItem alloc] initWithCustomView:batView];
+    self.navigationItem.rightBarButtonItem = rightbar;
+    
+}
+
 - (void)rightNavAction {
     NSLog(@"点击了导航栏右边按钮");
 }
+
 - (void)backNavAction {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+
+- (void)btnAction:(UIButton *)btn {
+    
+}
+
 //设置边框
 -(void)setBorder:(UIView *)view size:(float)size{
     CGFloat width = 1/[UIScreen mainScreen].scale;

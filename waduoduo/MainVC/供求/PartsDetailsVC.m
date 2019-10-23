@@ -13,6 +13,9 @@
 #import "PartsVC.h"
 #import "SDPhotoBrowser.h"
 #import "LQPopUpView.h"
+#import "HZIAPManager.h"
+#import "payInfoVC.h"
+#import "secondModel.h"
 
 static NSString * CellIdentifier = @"CellIdentifier";
 
@@ -30,6 +33,9 @@ static NSString * CellIdentifier = @"CellIdentifier";
 
 @property (strong, nonatomic) NSMutableArray *products;
 @property (nonatomic ,strong) UIButton *backHomeBtn;
+@property (nonatomic ,strong) UIView *backView;
+@property (nonatomic ,strong) NSMutableArray *payArr;
+@property (nonatomic ,strong) secondModel *model;
 
 @end
 
@@ -38,7 +44,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"配件详情";
+    self.title = @"产品详情";
     
     [self setup];
     [self setUICollectionView];
@@ -63,6 +69,16 @@ static NSString * CellIdentifier = @"CellIdentifier";
     return _products;
 }
 
+- (UIView *)backView {
+    if (_backView == nil) {
+        _backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        _backView.backgroundColor = UIColorWithRGBA(0, 0, 0, 0.3);
+        _backView.hidden = YES;
+        [APP_DELE.window addSubview:_backView];
+    }
+    return _backView;
+}
+
 - (UIButton *)backHomeBtn {
     if (_backHomeBtn==nil) {
         
@@ -85,11 +101,19 @@ static NSString * CellIdentifier = @"CellIdentifier";
 
 - (void)setup {
     
+    self.payArr = [[NSMutableArray alloc] initWithArray:[AVUser currentUser][@"payList"]];
+    self.model = [[secondModel alloc] init];
+    self.model.Linkman = avoidNull(self.object[@"title"]);
+    self.model.Mobile = avoidNull(self.object[@"phone"]);
+    
     [[RCIM sharedRCIM] setUserInfoDataSource:self];
     
     //取值
     imgurl = [avoidNull(self.object[@"image"]) componentsSeparatedByString:@","];
     NSString *content = self.object[@"content"];
+    if ([self.object[@"permissions"] isEqualToString:@"2"]) {
+        content = [NSString stringWithFormat:@"%@\n联系电话：%@",content,self.object[@"phone"]];
+    }
     CGFloat H = [XYString HeightForText:content withSizeOfLabelFont:14 withWidthOfContent:SCREEN_WIDTH-30];
     
     headV = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, kWidth5(180)+325+H)];
@@ -132,7 +156,11 @@ static NSString * CellIdentifier = @"CellIdentifier";
             [self configureRightImage:@"garbage"];
         }
     }else {
-        [self configureRightImage:@"chat_2"];
+        if (self.model.Mobile.length > 0 && ![self.object[@"permissions"] isEqualToString:@"2"]) {
+            [self configureRightImage1:@"xq_sj" setImage2:@"chat_2"];
+        }else {
+            [self configureRightImage:@"chat_2"];
+        }
     }
     collecArr = [[NSMutableArray alloc] initWithArray:[AVUser currentUser][@"collection"]];
     if ([collecArr containsObject:self.object[@"objectId"]]) {
@@ -189,7 +217,7 @@ static NSString * CellIdentifier = @"CellIdentifier";
     
     UILabel *title4LB = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, SCREEN_WIDTH-30, 30)];
     title4LB.font = [UIFont systemFontOfSize:15];
-    title4LB.text = @"配件详情";
+    title4LB.text = @"产品详情";
     title4LB.textColor = titleC1;
     [backV4 addSubview:title4LB];
     
@@ -452,6 +480,71 @@ static NSString * CellIdentifier = @"CellIdentifier";
         conversationVC.title = user.username;
         [self.navigationController pushViewController:conversationVC animated:YES];
     }
+}
+
+- (void)btnAction:(UIButton *)btn {
+    
+    if ([AVUser currentUser]==nil) {
+        [EasyTextView showInfoText:@"请先登录"];
+        return;
+    }
+    
+    AVUser *user = self.object[@"owner"];
+    
+    if (btn.tag == 7000) {
+        
+        self.backView.hidden = NO;
+        [EasyLoadingView showLoadingImage:@"正在获取中..."];
+        [[HZIAPManager shareIAPManager] startIAPWithProductID:@"200010" completeHandle:^(IAPResultType type, NSData * _Nonnull data) {
+            if (type == IAPResultVerSuccess || type == IAPResultSuccess) {
+                
+                if (self.payArr.count == 0) {
+                    [self.payArr addObject:[[self.model mj_keyValues] jsonStr]];
+                }else {
+                    [self.payArr insertObject:[[self.model mj_keyValues] jsonStr] atIndex:0];
+                }
+                [self updatePay];
+            }else {
+                self.backView.hidden = YES;
+            }
+        }];
+        
+    }else {
+        if (APP_DELE.newV==NO) {
+            [EasyTextView showInfoText:@"请更新版本"];
+            return;
+        }
+        if (APP_DELE.noPower==YES) {
+            return [EasyTextView showInfoText:@"你暂时无权限访问"];
+        }
+        chatVC *conversationVC = [[chatVC alloc]init];
+        conversationVC.conversationType = ConversationType_PRIVATE;
+        conversationVC.targetId = user.objectId;
+        conversationVC.title = user.username;
+        [self.navigationController pushViewController:conversationVC animated:YES];
+    }
+}
+
+- (void)updatePay {
+    
+    AVUser *user = [AVUser currentUser];
+    [user setObject:self.payArr forKey:@"payList"];
+    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        self.backView.hidden = YES;
+        [EasyLoadingView hidenLoading];
+        if (succeeded) {
+            payInfoVC *MVC = [[payInfoVC alloc] init];
+            MVC.isSuccess = 1;
+            MVC.tel = self.model.Mobile;
+            [self.navigationController pushViewController:MVC animated:YES];
+        }else {
+            payInfoVC *MVC = [[payInfoVC alloc] init];
+            MVC.isSuccess = 2;
+            MVC.tel = self.model.Mobile;
+            [self.navigationController pushViewController:MVC animated:YES];
+        }
+    }];
+    
 }
 
 - (void)moreAction {

@@ -422,4 +422,15 @@
     return date;
 }
 
+#pragma mark -- 新增
+- (NSString *)order {
+    return [self stringWithFormat:[NSDate dbFormatString2]];
+}
++ (NSString *)dbFormatString2 {
+    return [NSDate timestampFormatString2];
+}
++ (NSString *)timestampFormatString2 {
+    return @"YYMMddHHmmss";
+}
+
 @end

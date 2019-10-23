@@ -35,6 +35,11 @@
 #import "Network.h"
 #import "NSObject+HG.h"
 #import "EasyShowView.h"
+// TC
+#import "UIView+LoadState.h"
+#import "BaseRequest.h"
+
+#import "LoginVC.h"
 
 __attribute__((annotate("returns_localized_nsstring")))
 static inline NSString *LocalizationNotNeeded(NSString *s) {
@@ -53,8 +58,8 @@ static inline NSString *LocalizationNotNeeded(NSString *s) {
 
 #define StrFormatTh(r, g ,b) [NSString stringWithFormat:@"%@%@%@",(r),(g),(b)]
 #define StrFormatTW(r, g ) [NSString stringWithFormat:@"%@%@",(r),(g)]
-#define IP  @"http://www.jixiek.com/"
-
+//#define IP  @"http://www.jixiek.com/"
+#define IP  @"http://www.159cai.com/phpt"
 /**
  *  弱指针
  */
@@ -100,6 +105,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:transparentValue]
 #define GoodsPriceColor UIColorFromRGB(0xfc0000)
 #define GoodsPriceFont [UIFont systemFontOfSize:16]
 #define MyBlueColor UIColorFromRGB(0x2196f3)
+#define COLOR_MAIN UIColorFromRGB(0xFF3350) // 主题红色
+#define COLOR_BULE UIColorFromRGB(0X2883E0) // 蓝色
 
 #define BorderColor colorValue(0xC0C0C0,1) //线的颜色
 #define BorderColor2 color(229, 229, 229, 1)//分割线颜色
@@ -159,6 +166,13 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:transparentValue]
 #define IOS8LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 #define IOS10_2LATER ([[[UIDevice currentDevice] systemVersion] floatValue] > 10.1)
 #define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]// 手机系统版本
+
+// 屏幕适配
+#define SPwidth6(R)  (R)*(SCREEN_WIDTH)/375.0
+#define SPWidth5(R)  (iPhone5?((R)*(SCREEN_WIDTH)/320):((R)*(SCREEN_WIDTH)/375))
+#define SPWidth6P(R) (iPhone6plus?((R)*(SCREEN_WIDTH)/414):((R)*(SCREEN_WIDTH)/375))
+#define SPfont(R)    (R)*(SCREEN_WIDTH)/375.0
+#define SCALELINEH   (1.0/[UIScreen mainScreen].scale)
 
 // 基本尺寸
 #define JLNavH    (iPhoneX ? 88 : 64)
