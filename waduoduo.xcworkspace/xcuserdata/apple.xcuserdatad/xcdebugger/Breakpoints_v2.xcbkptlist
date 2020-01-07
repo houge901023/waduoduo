@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Bucket
+   uuid = "5EC064E0-9ED7-4BEC-AE6D-88171C32EB6C"
    type = "0"
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "35A4BFEF-9898-433E-8559-71A36B2A183A"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -22,6 +24,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "853F2953-EF37-4D26-BD06-EA00B1147B3A"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -38,6 +41,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "F1E2E55C-75CF-4CCA-B177-1DB2DB349A6B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -54,6 +58,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "13305A69-BC42-4473-8356-97DD7D355E8F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"

@@ -36,8 +36,8 @@
 #import "NSObject+HG.h"
 #import "EasyShowView.h"
 // TC
-#import "UIView+LoadState.h"
-#import "BaseRequest.h"
+//#import "UIView+LoadState.h"
+//#import "BaseRequest.h"
 
 #import "LoginVC.h"
 

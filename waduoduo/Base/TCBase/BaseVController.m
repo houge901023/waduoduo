@@ -17,7 +17,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.view.stateView.frame = CGRectMake(0, JLNavH, SCREEN_WIDTH, SCREEN_HEIGHT-JLNavH);
     // 设置自定义导航栏
     [self setNavigationBar];
 }
